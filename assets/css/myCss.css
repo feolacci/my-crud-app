@@ -1,0 +1,39 @@
+/* stylesheet */
+div.jumbotron {
+  margin-bottom: 30px;
+}
+
+div.card-deck {
+  margin-bottom: 30px;
+}
+
+ol.breadcrumb {
+  font-size: .8rem;
+  border-radius: 0;
+  margin-bottom: 30px;
+}
+
+ol.breadcrumb a {
+  color: #212529;
+}
+
+ol.breadcrumb a:hover {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.card {
+  margin-bottom: 30px;
+}
+
+h4.titolo {
+  margin-bottom: 0;
+}
+
+h5.titolo {
+  margin-bottom: 15px;
+}
+
+.card-body table {
+  margin-bottom: 0;
+}
