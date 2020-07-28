@@ -133,6 +133,19 @@ class Database {
       );
     }
   } // fine getRegioneDetail
+
+  public function deleteRegione($request) {
+    $query = "DELETE FROM regioni WHERE regione = :regione";
+
+    try {      
+      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt->execute(array(':regione' => $request));      
+      return 1;
+    } catch(PDOException $ex) {
+      return 0;
+    }
+
+  } // fine deleteRegione
 } // class
 
 // $database = new Database();

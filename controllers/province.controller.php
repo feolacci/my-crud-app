@@ -33,6 +33,10 @@ class Controller {
   public function actionRegioneDetail($request) {
     return $this->database->getRegioneDetail($request);
   }
+
+  public function actionDeleteRegione($request) {
+    return $this->database->deleteRegione($request);
+  }
 } // fine classe controller
 
 // 1. Istanziare il controller
@@ -65,6 +69,15 @@ if(isset($_GET['r'])) {
       $arrCount=$myCtrl->actionCountProvince($request['regione']);
 
       include "../views/province/listaProvincePerRegione.php";
+      break;
+
+    case "RegioneDelete":
+      $result = $myCtrl->actionDeleteRegione($request['regione']);
+      if($result) {
+        header("Location: province.controller.php?r=ListaRegioni&msg=1");
+      } else {
+        header("Location: province.controller.php?r=ListaRegioni&msg=0");
+      }
       break;
 
     // case "CountProvince":

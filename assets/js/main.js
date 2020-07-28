@@ -1,11 +1,13 @@
 document.addEventListener('DOMContentLoaded', (event) => {
   new Page();
+  new Controller();
 });
 
 class Page {
   constructor() {
     this.updateTitle();
     this.updateNavbar();
+    this.showAlert();
   }
 
   updateTitle() {
@@ -42,6 +44,27 @@ class Page {
     });
   }
 
+  showAlert() {
+    var alerts = [ 
+      document.querySelector(".alert-success"), //[0]
+      document.querySelector(".alert-danger")   //[1]
+    ];
+    var msg = this.getParameterByName("msg");
+    //msg ? alerts[0].classList.remove("d-none") : alerts[1].classList.remove("d-none");
+    switch(msg) {
+      case '1':
+        alerts[0].classList.remove("d-none");
+        break;
+
+      case '0':
+        alerts[1].classList.remove("d-none");
+        break;
+    
+      default:
+        break;
+    }
+  }
+
   getParameterByName(name, url) {
     if(!url) {url = window.location.href;}
     name = name.replace(/[\[\]]/g, '\\$&');
@@ -50,5 +73,22 @@ class Page {
     if(!results) {return null;}
     if(!results[2]) {return '';}
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
+  }
+}
+
+class Controller {
+  constructor() {
+    var elems = document.querySelectorAll(".delete");
+    elems.forEach(el => {
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        var r = confirm("Sei sicuro?");
+        if (r == true) {
+          window.location.href = e.currentTarget.getAttribute("href");
+        } else {
+          
+        }
+      });
+    });
   }
 }

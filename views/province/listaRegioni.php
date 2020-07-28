@@ -12,6 +12,12 @@
       <h4 class= "titolo">Lista delle regioni</h4>
     </div>
     <div class="card-body">
+      <div class="alert alert-success d-none" role="alert">
+        Cancellazione avvenuta
+      </div>
+      <div class="alert alert-danger d-none" role="alert">
+        Attenzione! Cancellazione NON avvenuta
+      </div>
       <table class= "table table-hover table-bordered">
         <thead>
           <tr>
@@ -27,7 +33,10 @@
             echo "<tr>";
             echo "<td>" . $listaRegioni[$i]['id_regione'] . "</td>";
             echo "<td>" . $listaRegioni[$i]['regione'] . "</td>";
-            echo "<td><a href='province.controller.php?r=RegioneDetail&regione=" . $listaRegioni[$i]['regione'] . "'><i class='fa fa-eye'></i></a></td>";
+            echo "<td>
+              <a class='detail' href='province.controller.php?r=RegioneDetail&regione=" . $listaRegioni[$i]['regione'] . "'><i class='fa fa-eye'></i></a>
+              <a class='delete' href='province.controller.php?r=RegioneDelete&regione=" . $listaRegioni[$i]['regione'] . "'><i class='fa fa-times'></i></a>
+            </td>";
             echo "</tr>";
           }
           ?>
