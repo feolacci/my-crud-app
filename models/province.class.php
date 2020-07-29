@@ -134,6 +134,24 @@ class Database {
     }
   } // fine getRegioneDetail
 
+  public function addRegione($request) {
+    $data = [
+      'regione' => $request['nameRegione']
+    ];
+    
+    $query = "INSERT INTO regioni (regione) VALUES (:regione)";
+
+    try {
+      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt->execute($data);
+      return 1;
+
+    } catch(PDOException $ex) {
+      var_dump($ex->getMessage());
+      return 0;
+    }
+  } // fine addRegione
+
   public function deleteRegione($request) {
     $query = "DELETE FROM regioni WHERE regione = :regione";
 

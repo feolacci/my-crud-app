@@ -2,19 +2,26 @@
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="../index.php">Homepage</a></li>
     <li class="breadcrumb-item"><a href="province.controller.php?r=ListaRegioni">Lista delle regioni</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><?= $arrListaProvince[0]['regione']; ?></li>
+    <li class="breadcrumb-item active" aria-current="page"><?= $_GET['regione']; ?></li>
   </ol>
 </nav>
 
 <div class= "container">
+  <div class="alert alert-success d-none" role="alert">
+    Regione aggiunta con successo
+  </div>
+  <div class="alert alert-danger d-none" role="alert">
+    Attenzione! Regione non aggiunta
+  </div>
   
   <div class="card shadow">
     <div class="card-header">
-      <h4 class="titolo">Dettaglio della regione: <span class="text-primary"><?= $arrListaProvince[0]['regione']; ?></span></h4>
+      <h4 class="titolo">Dettaglio della regione: <span class="text-primary"><?= $_GET['regione']; ?></span></h4>
     </div>
     <div class="card-body">
       <h5 class="titolo">Province <span class="badge badge-primary"><?= $arrCount['conteggio']; ?></span></h5>
 
+      <?php if(!isset($arrListaProvince['message'])) { ?>
       <table class= "table table-hover table-bordered">
         <thead>
           <tr>
@@ -23,20 +30,23 @@
           </tr>
         </thead>
         <tbody>
-
           <?php
-          // print_r($arrListaProvince);
-          // print_r($arrCount);
-          for($i = 0; $i < count($arrListaProvince); $i++) {
-            echo "<tr>";
-            echo "<td>" . $arrListaProvince[$i]['provincia_sigla'] . "</td>";
-            echo "<td>" . $arrListaProvince[$i]['provincia'] . "</td>";
-            echo "</tr>";
-          }
+            // print_r($arrListaProvince);
+            // print_r($arrCount);
+            for($i = 0; $i < count($arrListaProvince); $i++) {
+              echo "<tr>";
+              echo "<td>" . $arrListaProvince[$i]['provincia_sigla'] . "</td>";
+              echo "<td>" . $arrListaProvince[$i]['provincia'] . "</td>";
+              echo "</tr>";
+            }
           ?>
-
         </tbody>
       </table>
+      <?php
+        } else {
+          echo "Nessuna provincia trovata!";
+        }
+      ?>
     </div>
   </div>
 

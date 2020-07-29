@@ -10,6 +10,7 @@
   <div class="card shadow">
     <div class="card-header">
       <h4 class= "titolo">Lista delle regioni</h4>
+      <a href="province.controller.php?r=RegioneCreate" class="btn btn-sm btn-success"><i class="fa fa-plus"></i>Aggiungi regione</a>
     </div>
     <div class="card-body">
       <div class="alert alert-success d-none" role="alert">

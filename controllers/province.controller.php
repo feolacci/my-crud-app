@@ -34,6 +34,10 @@ class Controller {
     return $this->database->getRegioneDetail($request);
   }
 
+  public function actionAddRegione($request) {
+    return $this->database->addRegione($request);
+  }
+
   public function actionDeleteRegione($request) {
     return $this->database->deleteRegione($request);
   }
@@ -66,9 +70,22 @@ if(isset($_GET['r'])) {
     case "RegioneDetail":
       $arrListaProvince = $myCtrl->actionRegioneDetail($request['regione']);
       // echo json_encode($arrListaProvince);
-      $arrCount=$myCtrl->actionCountProvince($request['regione']);
+      $arrCount = $myCtrl->actionCountProvince($request['regione']);
 
       include "../views/province/listaProvincePerRegione.php";
+      break;
+
+    case "RegioneCreate":
+      include "../views/province/creaRegione.php";
+      break;
+
+    case "RegioneAdd":
+      $result = $myCtrl->actionAddRegione($_POST);
+      if($result) {
+        header("Location: province.controller.php?r=RegioneDetail&regione=" . $_POST['nameRegione'] . "&msg=1");
+      } else {
+        header("Location: province.controller.php?r=RegioneDetail&regione=" . $_POST['nameRegione'] . "&msg=0");
+      }
       break;
 
     case "RegioneDelete":

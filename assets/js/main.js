@@ -50,7 +50,6 @@ class Page {
       document.querySelector(".alert-danger")   //[1]
     ];
     var msg = this.getParameterByName("msg");
-    //msg ? alerts[0].classList.remove("d-none") : alerts[1].classList.remove("d-none");
     switch(msg) {
       case '1':
         alerts[0].classList.remove("d-none");

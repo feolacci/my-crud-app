@@ -26,7 +26,16 @@ ol.breadcrumb a:hover {
   margin-bottom: 30px;
 }
 
+.card-header a {
+  float: right;
+}
+
+.card-header a i {
+  margin-right: 10px;
+}
+
 h4.titolo {
+  display: inline-block;
   margin-bottom: 0;
 }
 
