@@ -26,6 +26,10 @@ class Controller {
     // print_r($this->database->getRegioni());
   }
 
+  public function actionRegione($request) {
+    return $this->database->getRegione($request);
+  }
+
   public function actionCountProvince($request) {
     return $this->database->getCountProvince($request);
   }
@@ -36,6 +40,10 @@ class Controller {
 
   public function actionAddRegione($request) {
     return $this->database->addRegione($request);
+  }
+
+  public function actionEditRegione($request) {
+    return $this->database->editRegione($request);
   }
 
   public function actionDeleteRegione($request) {
@@ -79,10 +87,26 @@ if(isset($_GET['r'])) {
       include "../views/province/creaRegione.php";
       break;
 
+    case "RegioneUpdate":
+      $regione = $_GET["regione"];
+      $nomeRegione = $myCtrl->actionRegione($regione);
+      //var_dump($nomeRegione);
+      include "../views/province/modificaRegione.php";
+      break;
+
     case "RegioneAdd":
       $result = $myCtrl->actionAddRegione($_POST);
       if($result) {
         header("Location: province.controller.php?r=RegioneDetail&regione=" . $_POST['nameRegione'] . "&msg=1");
+      } else {
+        header("Location: province.controller.php?r=RegioneDetail&regione=" . $_POST['nameRegione'] . "&msg=0");
+      }
+      break;
+
+    case "RegioneEdit":
+      $result = $myCtrl->actionEditRegione($_POST);
+      if($result) {
+        header("Location: province.controller.php?r=RegioneDetail&regione=" . $_POST['nameRegione'] . "&msg=2");
       } else {
         header("Location: province.controller.php?r=RegioneDetail&regione=" . $_POST['nameRegione'] . "&msg=0");
       }

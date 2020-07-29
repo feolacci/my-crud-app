@@ -83,6 +83,30 @@ class Database {
     }
   } // fine getRegioni
 
+  public function getRegione($request) {
+
+    $data = [
+      'regione' => $request
+    ];
+    
+    $query = "SELECT * FROM regioni WHERE regione=:regione";
+
+    try {
+      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt->execute($data);
+      
+      if($this->stmt->rowCount() > 0) {
+        $regione = $this->stmt->fetch(PDO::FETCH_ASSOC);
+        return $regione;
+      } else {
+        return array('message' => "Nessuna regione trovata");
+      }
+
+    } catch(PDOException $ex) {
+      
+    }
+  } // fine getRegioni
+
   // il conteggio delle province per quella regione
 
   public function getCountProvince($request) {
@@ -152,12 +176,30 @@ class Database {
     }
   } // fine addRegione
 
+  public function editRegione($request) {
+    $data = [
+      'regione' => $_GET['regione'], // vecchio nome
+      'nameRegione' => $request["nameRegione"] // nuovo nome
+    ];
+
+    $query = "UPDATE regioni SET regione=:nameRegione WHERE regione = :regione";
+    
+    try {
+      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt->execute($data);
+      return 1;
+    } catch(PDOException $ex) {
+      return 0;
+    }    
+
+  }
+
   public function deleteRegione($request) {
     $query = "DELETE FROM regioni WHERE regione = :regione";
 
     try {      
       $this->stmt = $this->dbConn->prepare($query);
-      $this->stmt->execute(array(':regione' => $request));      
+      $this->stmt->execute(array(':regione' => $request));
       return 1;
     } catch(PDOException $ex) {
       return 0;

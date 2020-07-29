@@ -10,10 +10,7 @@
   <div class="alert alert-success d-none" role="alert">
     Regione aggiunta con successo
   </div>
-  <div class="alert alert-danger d-none" role="alert">
-    Attenzione! Regione non aggiunta
-  </div>
-  
+  <div class="alert alert-danger d-none" role="alert"></div>
   <div class="card shadow">
     <div class="card-header">
       <h4 class="titolo">Dettaglio della regione: <span class="text-primary"><?= $_GET['regione']; ?></span></h4>

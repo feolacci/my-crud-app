@@ -51,12 +51,18 @@ class Page {
     ];
     var msg = this.getParameterByName("msg");
     switch(msg) {
-      case '1':
+      case '2':        
+        alerts[0].textContent = "Modifica regione avvenuta con successo";
         alerts[0].classList.remove("d-none");
         break;
 
+      case '1':        
+        alerts[0].classList.remove("d-none");        
+        break;
+
       case '0':
-        alerts[1].classList.remove("d-none");
+        alerts[1].textContent = "Attenzione! Operazione non avvenuta";
+        alerts[1].classList.remove("d-none");        
         break;
     
       default:
