@@ -1,5 +1,5 @@
 <?php
-// questo file costituisce il Model della nostra applicazione PHP-OOP-MVC
+
 // qui dentro dobbiamo fare la connessione al DB
 include "../config/database.config.php";
 
@@ -10,7 +10,6 @@ class Database {
   private $dbname = DB_NAME;
   private $dbConn;
   private $stmt;
-
   private $error;
 
   public function __construct() {
@@ -25,7 +24,6 @@ class Database {
 
     try {
       $this->dbConn = new PDO($dsn, $this->user, $this->pass, $options);
-      // print_r(array('message' => "Connection OK"));
       return array('message' => "Connection OK");
 
     } catch(PDOException $ex) {
@@ -207,7 +205,3 @@ class Database {
 
   } // fine deleteRegione
 } // class
-
-// $database = new Database();
-// $database->getRegioni();
-// $database->getCountProvince('Piemonte');
