@@ -1,11 +1,3 @@
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="../index.php">Homepage</a></li>
-    <li class="breadcrumb-item"><a href="regione.controller.php?r=regioni">Lista delle regioni</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><?= $_GET['id']; ?></li>
-  </ol>
-</nav>
-
 <div class= "container">
 
   <div class="card shadow">

@@ -1,10 +1,3 @@
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="../index.php">Homepage</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Lista delle regioni</li>
-  </ol>
-</nav>
-
 <div class= "container">
 
   <div class="card shadow">
@@ -29,9 +22,9 @@
             echo "<td>" . $regioni[$i]['id_regione'] . "</td>";
             echo "<td>" . $regioni[$i]['regione'] . "</td>";
             echo "<td>
-              <a class='detail' href='regione.controller.php?r=regione&id=" . $regioni[$i]['regione'] . "'><i class='fa fa-eye'></i></a>
-              <a class='detail' href='regione.controller.php?r=modificaRegione&id=" . $regioni[$i]['regione'] . "'><i class='fa fa-pencil'></i></a>
-              <a class='delete' href='regione.controller.php?r=deleteRegione&id=" . $regioni[$i]['regione'] . "'><i class='fa fa-times'></i></a>
+              <a class='detail' href='regione.controller.php?r=regione&id=" . $regioni[$i]['regione'] . "' data-toggle='tooltip' data-placement='top' title='Dettaglio'><i class='fa fa-eye'></i></a>
+              <a class='detail' href='regione.controller.php?r=modificaRegione&id=" . $regioni[$i]['regione'] . "' data-toggle='tooltip' data-placement='top' title='Modifica'><i class='fa fa-pencil'></i></a>
+              <a class='delete' href='regione.controller.php?r=deleteRegione&id=" . $regioni[$i]['regione'] . "' data-toggle='tooltip' data-placement='top' title='Elimina'><i class='fa fa-times'></i></a>
             </td>";
             echo "</tr>";
           }

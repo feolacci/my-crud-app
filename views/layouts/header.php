@@ -30,3 +30,18 @@
       </ul>
     </div>
   </nav>
+
+  <?php if(isset($breadcrumb)) { ?>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <?php
+          for($i = 0; $i < count($breadcrumb); $i++) {
+          if($i == count($breadcrumb)-1) {
+        ?>
+          <li class="breadcrumb-item active"><?= $breadcrumb[$i]["label"] ?></li>
+        <?php } else { ?>
+          <li class="breadcrumb-item"><a href="<?= $breadcrumb[$i]["url"] ?>"><?= $breadcrumb[$i]["label"] ?></a></li>
+        <?php }} ?>
+      </ol>
+    </nav>
+  <?php } ?>

@@ -40,31 +40,59 @@ class RegioneController {
 $controller = new RegioneController();
 
 if(isset($_GET['r'])) {
-  include "../views/layouts/header.php";
+  
 
   switch($_GET['r']) {
     // Casi passivi
     case "regioni":
       $regioni = $controller->actionRegioni();
 
+      $breadcrumb = [
+        ["label" => "Homepage", "url" => "../index.php"],
+        ["label" => "Lista delle regioni"], // (active non ha url)
+      ];
+      include "../views/layouts/header.php";
       include "../views/regione/regioni.php";
+      include "../views/layouts/footer.php";
       break;
 
     case "regione":
       $province = $controller->actionDettaglioRegione($_GET['id']);
       $provinceCount = $controller->actionCountProvince($_GET['id']);
 
+      $breadcrumb = [
+        ["label" => "Homepage", "url" => "../index.php"],
+        ["label" => "Lista delle regioni", "url" => "regione.controller.php?r=regioni"],
+        ["label" => "Dettaglio regione"]
+      ];
+      include "../views/layouts/header.php";
       include "../views/regione/provincePerRegione.php";
+      include "../views/layouts/footer.php";
       break;
 
     case "aggiungiRegione":
+      $breadcrumb = [
+        ["label" => "Homepage", "url" => "../index.php"],
+        ["label" => "Lista delle regioni", "url" => "regione.controller.php?r=regioni"],
+        ["label" => "Aggiungi regione"]
+      ];
+      include "../views/layouts/header.php";
       include "../views/regione/aggiungiRegione.php";
+      include "../views/layouts/footer.php";
       break;
 
     case "modificaRegione":
       $nomeRegione = $controller->actionRegione($_GET['id']);
 
+      $breadcrumb = [
+        ["label" => "Homepage", "url" => "../index.php"],
+        ["label" => "Lista delle regioni", "url" => "regione.controller.php?r=regioni"],
+        ["label" => "Dettaglio regione", "url" => "regione.controller.php?r=regione&id=".$_GET["id"]],
+        ["label" => "Modifica regione"]
+      ];
+      include "../views/layouts/header.php";
       include "../views/regione/modificaRegione.php";
+      include "../views/layouts/footer.php";
       break;
     
     // Casi attivi
@@ -99,14 +127,25 @@ if(isset($_GET['r'])) {
       $myMsg = [];
       $myMsg['message'] = "Forbidden";
 
+      $breadcrumb = [
+        ["label" => "Homepage", "url" => "../index.php"],
+        ["label" => "Errore"]
+      ];
+      include "../views/layouts/header.php";
       include "../views/error.php";
+      include "../views/layouts/footer.php";
     break;
   }
-
-  include "../views/layouts/footer.php";
+  
 } else {
   $myMsg = [];
   $myMsg['message'] = "Forbidden";
 
+  $breadcrumb = [
+    ["label" => "Homepage", "url" => "../index.php"],
+    ["label" => "Errore"]
+  ];
+  include "../views/layouts/header.php";
   include "../views/error.php";
+  include "../views/layouts/footer.php";
 }
