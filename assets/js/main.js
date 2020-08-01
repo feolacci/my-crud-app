@@ -14,10 +14,10 @@ class Page {
     var titleElem = document.getElementsByTagName('title');
 
     switch(this.getParameterByName('r')) {
-      case 'ListaRegioni':
+      case 'regioni':
         titleElem[0].textContent += " - Lista delle regioni";
         break;
-      case 'RegioneDetail':
+      case 'regione':
         var regione = this.getParameterByName('regione');
         titleElem[0].textContent += " - Dettaglio della regione: " + regione;
         break;
@@ -45,28 +45,28 @@ class Page {
   }
 
   showAlert() {
-    var alerts = [ 
-      document.querySelector(".alert-success"), //[0]
-      document.querySelector(".alert-danger")   //[1]
-    ];
-    var msg = this.getParameterByName("msg");
-    switch(msg) {
-      case '2':        
-        alerts[0].textContent = "Modifica regione avvenuta con successo";
-        alerts[0].classList.remove("d-none");
-        break;
+    var html = new Html();
+    var container = document.querySelector('div.container');
 
-      case '1':        
-        alerts[0].classList.remove("d-none");        
-        break;
-
-      case '0':
-        alerts[1].textContent = "Attenzione! Operazione non avvenuta";
-        alerts[1].classList.remove("d-none");        
-        break;
-    
-      default:
-        break;
+    var msg = this.getParameterByName('msg');
+    if(msg) {
+      switch(msg) {
+        case '3':
+          container.prepend(html.createAlert('success', "La regione è stata cancellata con successo."));
+          break;
+        case '2':
+          container.prepend(html.createAlert('success', "La regione è stata aggiornata con successo."));
+          break;
+        case '1':
+          container.prepend(html.createAlert('success', "La regione è stata aggiunta con successo."));
+          break;
+        case '0':
+          container.prepend(html.createAlert('danger', "Non è stato possibile eseguire l'operazione richiesta."));
+          break;
+        default:
+          container.prepend(html.createAlert('danger', "Si è verificato un errore."));
+          break;
+      }
     }
   }
 
@@ -84,16 +84,31 @@ class Page {
 class Controller {
   constructor() {
     var elems = document.querySelectorAll(".delete");
+
     elems.forEach(el => {
       el.addEventListener("click", (e) => {
         e.preventDefault();
-        var r = confirm("Sei sicuro?");
-        if (r == true) {
-          window.location.href = e.currentTarget.getAttribute("href");
-        } else {
-          
-        }
+        let x = e.currentTarget.getAttribute("href");
+
+        $('#exampleModal').modal('show');
+        var btnSave = document.querySelector('.modal-footer button:last-of-type');
+        btnSave.addEventListener('click', () => {
+          $('#myModal').modal('hide');
+          window.location.href = x;
+        });
       });
     });
+  }
+}
+
+class Html {
+  div() {}
+
+  createAlert(type, msg) {
+    let div = document.createElement('div');
+    div.classList.add('alert', 'alert-' + type);
+    div.setAttribute('role', 'alert');
+    div.textContent = msg;
+    return div;
   }
 }

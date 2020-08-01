@@ -1,7 +1,7 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="../index.php">Homepage</a></li>
-    <li class="breadcrumb-item"><a href="province.controller.php?r=ListaRegioni">Lista delle regioni</a></li>
+    <li class="breadcrumb-item"><a href="regione.controller.php?r=regioni">Lista delle regioni</a></li>
     <li class="breadcrumb-item active" aria-current="page">Aggiungi regione</li>
   </ol>
 </nav>
@@ -14,7 +14,7 @@
     </div>
     <div class="card-body">
       <?php
-        $action = "province.controller.php?r=RegioneAdd";
+        $action = "regione.controller.php?r=addRegione";
         include "_form.php";
       ?>
     </div>

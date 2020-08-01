@@ -2,7 +2,7 @@
   <div class="container">
     <h1 class="display-4">Fluid jumbotron</h1>
     <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
-    <a class="btn btn-primary" href="/controllers/province.controller.php?r=ListaRegioni" role="button">Regioni italiane</a>
+    <a class="btn btn-primary" href="/controllers/regione.controller.php?r=regioni" role="button">Regioni italiane</a>
   </div>
 </div>
 
