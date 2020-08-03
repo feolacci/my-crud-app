@@ -12,6 +12,10 @@ class RegioneController {
     return $this->database->getRegioni();
   }
 
+  public function actionCercaRegioni($post) {
+    return $this->database->getCercaRegioni($post);
+  }
+
   public function actionRegione($get) {
     return $this->database->getRegione($get);
   }
@@ -40,16 +44,22 @@ class RegioneController {
 $controller = new RegioneController();
 
 if(isset($_GET['r'])) {
-  
+  $stylesheet = ["/assets/css/regione.css"];
+  $script = [
+    "/assets/js/page.class.js",
+    "/assets/js/regione.js",
+    "/assets/js/html.class.js"
+  ];
 
   switch($_GET['r']) {
     // Casi passivi
     case "regioni":
-      $regioni = $controller->actionRegioni();
+      $regioni = isset($_POST['search']) ? $controller->actionCercaRegioni($_POST['search']) : $controller->actionRegioni();
+      $regioniCount = isset($regioni['message']) ? 0 : count($regioni);
 
       $breadcrumb = [
-        ["label" => "Homepage", "url" => "../index.php"],
-        ["label" => "Lista delle regioni"], // (active non ha url)
+        ['label' => "Homepage", 'url' => "../index.php"],
+        ['label' => "Lista delle regioni"] // Active non ha url
       ];
       include "../views/layouts/header.php";
       include "../views/regione/regioni.php";
@@ -61,9 +71,9 @@ if(isset($_GET['r'])) {
       $provinceCount = $controller->actionCountProvince($_GET['id']);
 
       $breadcrumb = [
-        ["label" => "Homepage", "url" => "../index.php"],
-        ["label" => "Lista delle regioni", "url" => "regione.controller.php?r=regioni"],
-        ["label" => "Dettaglio regione"]
+        ['label' => "Homepage", 'url' => "../index.php"],
+        ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
+        ['label' => $_GET['id']]
       ];
       include "../views/layouts/header.php";
       include "../views/regione/provincePerRegione.php";
@@ -72,9 +82,9 @@ if(isset($_GET['r'])) {
 
     case "aggiungiRegione":
       $breadcrumb = [
-        ["label" => "Homepage", "url" => "../index.php"],
-        ["label" => "Lista delle regioni", "url" => "regione.controller.php?r=regioni"],
-        ["label" => "Aggiungi regione"]
+        ['label' => "Homepage", 'url' => "../index.php"],
+        ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
+        ['label' => "Aggiungi regione"]
       ];
       include "../views/layouts/header.php";
       include "../views/regione/aggiungiRegione.php";
@@ -85,10 +95,10 @@ if(isset($_GET['r'])) {
       $nomeRegione = $controller->actionRegione($_GET['id']);
 
       $breadcrumb = [
-        ["label" => "Homepage", "url" => "../index.php"],
-        ["label" => "Lista delle regioni", "url" => "regione.controller.php?r=regioni"],
-        ["label" => "Dettaglio regione", "url" => "regione.controller.php?r=regione&id=".$_GET["id"]],
-        ["label" => "Modifica regione"]
+        ['label' => "Homepage", 'url' => "../index.php"],
+        ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
+        ['label' => $_GET['id'], 'url' => "regione.controller.php?r=regione&id=" . $_GET["id"]],
+        ['label' => "Modifica regione"]
       ];
       include "../views/layouts/header.php";
       include "../views/regione/modificaRegione.php";
@@ -128,8 +138,8 @@ if(isset($_GET['r'])) {
       $myMsg['message'] = "Forbidden";
 
       $breadcrumb = [
-        ["label" => "Homepage", "url" => "../index.php"],
-        ["label" => "Errore"]
+        ['label' => "Homepage", 'url' => "../index.php"],
+        ['label' => "Pagina di errore"]
       ];
       include "../views/layouts/header.php";
       include "../views/error.php";
@@ -142,8 +152,8 @@ if(isset($_GET['r'])) {
   $myMsg['message'] = "Forbidden";
 
   $breadcrumb = [
-    ["label" => "Homepage", "url" => "../index.php"],
-    ["label" => "Errore"]
+    ['label' => "Homepage", 'url' => "../index.php"],
+    ['label' => "Pagina di errore"]
   ];
   include "../views/layouts/header.php";
   include "../views/error.php";

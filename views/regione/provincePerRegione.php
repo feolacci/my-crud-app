@@ -28,7 +28,7 @@
       </table>
       <?php
         } else {
-          echo "Nessuna provincia trovata!";
+          echo $province['message'];
         }
       ?>
     </div>

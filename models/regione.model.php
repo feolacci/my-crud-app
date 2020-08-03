@@ -42,7 +42,7 @@ class Database {
         $regioni = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
         return $regioni;
       } else {
-        return array('message' => "Nessuna regione trovata");
+        return array('message' => "Non è stata trovata nessuna regione.");
       }
 
     } catch(PDOException $ex) {
@@ -55,6 +55,34 @@ class Database {
     }
   } // getRegioni
 
+  public function getCercaRegioni($post) {
+    $query = "SELECT * FROM regioni WHERE regione LIKE :regione OR id_regione LIKE :id_regione";
+    $data = [
+      ':regione' => '%' . $post . '%',
+      ':id_regione' => $post
+    ];
+
+    try {
+      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt->execute($data);
+
+      if($this->stmt->rowCount() > 0) {
+        $regioni = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $regioni;
+      } else {
+        return array('message' => "La ricerca non ha prodotto risultati.");
+      }
+
+    } catch(PDOException $ex) {
+      $this->error = $ex->getMessage();
+
+      return array(
+        'message' => "Query error: " .   $this->error,
+        'line' => $ex->getLine()
+      );
+    }
+  } // getCercaRegioni
+
   public function getRegione($get) {
     $query = "SELECT * FROM regioni WHERE regione = :regione";
 
@@ -66,7 +94,7 @@ class Database {
         $regione = $this->stmt->fetch(PDO::FETCH_ASSOC);
         return $regione;
       } else {
-        return array('message' => "Regione non trovata");
+        return array('message' => "La regione indicata non è stata trovata.");
       }
 
     } catch(PDOException $ex) {
@@ -90,7 +118,7 @@ class Database {
         $province = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
         return $province;
       } else {
-        return array('message' => 'Nessuna provincia trovata');
+        return array('message' => "Non è stata trovata nessuna provincia.");
       }
 
     } catch(PDOException $ex) {

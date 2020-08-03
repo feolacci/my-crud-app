@@ -32,9 +32,9 @@
  - [x] Aggiungere la funzionalità "*Crea regione*".
  - [x] Aggiungere la funzionalità "*Modifica regione*".
  - [x] Aggiungere la funzionalità "*Elimina regione*".
- - [ ] Aggiungere la funzionalità "*Ricerca regione*".
+ - [x] Aggiungere la funzionalità "*Ricerca regione*".
  - [ ] Rendere le funzionalità "*Crea regione*" e "*Modifica regione*" asincrone.
- - [ ] Personalizzare le finestre di dialogo Javascript.
- - [ ] Rendere le "*Breadcrumb*" dinamiche.
+ - [x] Personalizzare le finestre di dialogo Javascript.
+ - [x] Rendere le "*Breadcrumb*" dinamiche.
  - [ ] Migliorare le misure di sicurezza dell'applicativo.
  - [ ] Implementare un sistema di autenticazione.

@@ -8,7 +8,11 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-  <link rel="stylesheet" href="/assets/css/myCss.css" type="text/css">
+  
+  <?php if(isset($stylesheet)) { ?>
+  <?php for($i = 0; $i < count($stylesheet); $i++) { ?>
+  <link rel="stylesheet" href="<?= $stylesheet[$i] ?>" type="text/css">
+  <?php }} ?>
 </head>
 
 <body>
@@ -34,14 +38,14 @@
   <?php if(isset($breadcrumb)) { ?>
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
-        <?php
-          for($i = 0; $i < count($breadcrumb); $i++) {
-          if($i == count($breadcrumb)-1) {
-        ?>
-          <li class="breadcrumb-item active"><?= $breadcrumb[$i]["label"] ?></li>
-        <?php } else { ?>
-          <li class="breadcrumb-item"><a href="<?= $breadcrumb[$i]["url"] ?>"><?= $breadcrumb[$i]["label"] ?></a></li>
-        <?php }} ?>
+      <?php
+        for($i = 0; $i < count($breadcrumb); $i++) {
+        if($i == count($breadcrumb) - 1) {
+      ?>
+        <li class="breadcrumb-item active"><?= $breadcrumb[$i]['label'] ?></li>
+      <?php } else { ?>
+        <li class="breadcrumb-item"><a href="<?= $breadcrumb[$i]['url'] ?>"><?= $breadcrumb[$i]['label'] ?></a></li>
+      <?php }} ?>
       </ol>
     </nav>
   <?php } ?>
