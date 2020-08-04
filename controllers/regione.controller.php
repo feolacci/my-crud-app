@@ -39,6 +39,20 @@ class RegioneController {
   public function actionCountProvince($get) {
     return $this->database->getCountProvincePerRegione($get);
   }
+
+  // HELPER
+  public function errorHandler($msg) {
+    $myMsg = [];
+    $myMsg['message'] = $msg;
+  
+    $breadcrumb = [
+      ['label' => "Homepage", 'url' => "../index.php"],
+      ['label' => "Pagina di errore"]
+    ];
+    include "../views/layouts/header.php";
+    include "../views/error.php";
+    include "../views/layouts/footer.php";
+  } 
 } // RegioneController
 
 $controller = new RegioneController();
@@ -67,17 +81,30 @@ if(isset($_GET['r'])) {
       break;
 
     case "regione":
-      $province = $controller->actionDettaglioRegione($_GET['id']);
-      $provinceCount = $controller->actionCountProvince($_GET['id']);
+      if(isset($_GET['id'])) {
+        $regioni = $controller->actionRegioni();
+        $nomeRegione = array();
+        foreach ($regioni as $value) {
+          array_push($nomeRegione, $value['regione']);
+        }
+        if(in_array($_GET['id'], $nomeRegione)) {
+          $province = $controller->actionDettaglioRegione($_GET['id']);
+          $provinceCount = $controller->actionCountProvince($_GET['id']);
 
-      $breadcrumb = [
-        ['label' => "Homepage", 'url' => "../index.php"],
-        ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
-        ['label' => $_GET['id']]
-      ];
-      include "../views/layouts/header.php";
-      include "../views/regione/provincePerRegione.php";
-      include "../views/layouts/footer.php";
+          $breadcrumb = [
+            ['label' => "Homepage", 'url' => "../index.php"],
+            ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
+            ['label' => $_GET['id']]
+          ];
+          include "../views/layouts/header.php";
+          include "../views/regione/provincePerRegione.php";
+          include "../views/layouts/footer.php";
+        } else {
+          $controller->errorHandler('Regione inesistente');
+        } 
+      } else {
+        $controller->errorHandler('Operazione non consentita');
+      }
       break;
 
     case "aggiungiRegione":
@@ -92,17 +119,30 @@ if(isset($_GET['r'])) {
       break;
 
     case "modificaRegione":
-      $nomeRegione = $controller->actionRegione($_GET['id']);
-
-      $breadcrumb = [
-        ['label' => "Homepage", 'url' => "../index.php"],
-        ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
-        ['label' => $_GET['id'], 'url' => "regione.controller.php?r=regione&id=" . $_GET["id"]],
-        ['label' => "Modifica regione"]
-      ];
-      include "../views/layouts/header.php";
-      include "../views/regione/modificaRegione.php";
-      include "../views/layouts/footer.php";
+      if(isset($_GET['id'])) {
+        $regioni = $controller->actionRegioni();
+        $nomeRegioni = array();
+        foreach ($regioni as $value) {
+          array_push($nomeRegioni, $value['regione']);
+        }
+        if(in_array($_GET['id'], $nomeRegioni)) {
+          $nomeRegione = $controller->actionRegione($_GET['id']);
+          
+          $breadcrumb = [
+            ['label' => "Homepage", 'url' => "../index.php"],
+            ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
+            ['label' => $_GET['id'], 'url' => "regione.controller.php?r=regione&id=" . $_GET["id"]],
+            ['label' => "Modifica regione"]
+          ];
+          include "../views/layouts/header.php";
+          include "../views/regione/modificaRegione.php";
+          include "../views/layouts/footer.php";
+        } else {
+        $controller->errorHandler('Regione inesistente');
+        } 
+      } else {
+        $controller->errorHandler('Operazione non consentita');
+      }
       break;
     
     // Casi attivi
@@ -134,28 +174,10 @@ if(isset($_GET['r'])) {
       break;
 
     default:
-      $myMsg = [];
-      $myMsg['message'] = "Forbidden";
-
-      $breadcrumb = [
-        ['label' => "Homepage", 'url' => "../index.php"],
-        ['label' => "Pagina di errore"]
-      ];
-      include "../views/layouts/header.php";
-      include "../views/error.php";
-      include "../views/layouts/footer.php";
+    $controller->errorHandler('Risorsa non trovata');
     break;
   }
   
 } else {
-  $myMsg = [];
-  $myMsg['message'] = "Forbidden";
-
-  $breadcrumb = [
-    ['label' => "Homepage", 'url' => "../index.php"],
-    ['label' => "Pagina di errore"]
-  ];
-  include "../views/layouts/header.php";
-  include "../views/error.php";
-  include "../views/layouts/footer.php";
+  $controller->errorHandler('404 Not found');
 }
