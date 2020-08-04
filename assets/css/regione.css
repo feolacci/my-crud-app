@@ -43,12 +43,12 @@ h5.titolo {
   margin-bottom: 15px;
 }
 
-.card-body > .d-flex > .w-100 span {
+#regioni .card-body > .d-flex > .w-100 span {
   font-weight: bold;
   color: #007bff;
 }
 
-.input-group > .form-control {
+#regioni .input-group > .form-control {
   width: 250px;
 }
 
@@ -60,8 +60,8 @@ h5.titolo {
   background-color: rgba(0, 0, 0, .03);
 }
 
-.card-body table tbody td:last-of-type,
-.card-body table tbody td:first-of-type {
+#regioni .card-body table tbody td:last-of-type,
+#regioni .card-body table tbody td:first-of-type {
   width: 1%;
   text-align: center;
   vertical-align: middle;
@@ -70,6 +70,6 @@ h5.titolo {
   padding-bottom: 0;
 }
 
-.card-body table tbody td:last-of-type a:nth-child(2) {
+#regioni .card-body table tbody td:last-of-type a:nth-child(2) {
   margin: 0 10px;
 }
