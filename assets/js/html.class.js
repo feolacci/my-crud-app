@@ -1,5 +1,5 @@
 class Html {
-  static alert(type, msg, target = false) {
+  static alert(type, msg, target = false, prepend = false) {
     if(!target) {target = document.querySelector('div.container');}
     
     var div = document.createElement('div');
@@ -17,6 +17,7 @@ class Html {
 
     button.append(span);
     div.append(button);
-    target.prepend(div);
+
+    prepend ? target.append(div) : target.prepend(div);
   }
 }

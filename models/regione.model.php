@@ -134,7 +134,7 @@ class Database {
   public function setAddRegione($post) {
     $query = "INSERT INTO regioni (regione) VALUES (:regione)";
     $data = [
-      'regione' => $post['nameRegione']
+      'regione' => $post
     ];
 
     try {
@@ -151,7 +151,7 @@ class Database {
     $query = "UPDATE regioni SET regione = :nameRegione WHERE regione = :regione";
     $data = [
       'regione' => $_GET['id'], // Vecchio nome
-      'nameRegione' => $post["nameRegione"] // Nuovo nome
+      'nameRegione' => $post // Nuovo nome
     ];
     
     try {

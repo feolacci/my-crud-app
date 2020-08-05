@@ -14,6 +14,10 @@ class RegioneController {
 
     if(msg) {
       switch(msg) {
+        case '4':
+          var target = document.querySelector('form .form-group');
+          Html.alert('danger', "Nome regione non valido.", target, true);
+          break;
         case '3':
           Html.alert('success', "La regione è stata eliminata con successo.");
           break;

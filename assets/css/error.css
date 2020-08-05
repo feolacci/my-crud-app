@@ -1,0 +1,45 @@
+/* stylesheet */
+ol.breadcrumb {
+  font-size: .8rem;
+  border-radius: 0;
+  margin-bottom: 30px;
+}
+
+ol.breadcrumb a {
+  color: #212529;
+}
+
+ol.breadcrumb a:hover {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.card {
+  margin-bottom: 30px;
+}
+
+.card-header a {
+  float: right;
+}
+
+.card-header a i {
+  margin-right: 10px;
+}
+
+.card-body {
+  text-align: center;
+}
+
+h4.titolo {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+h5.titolo {
+  margin-bottom: 15px;
+  color: #dc3545;
+}
+
+img {
+  height: 300px;
+}

@@ -1,5 +1,6 @@
 <?php
 // Run application
+$stylesheet = ["/assets/css/index.css"];
 $script = ["/assets/js/page.class.js"];
 
 require "./views/layouts/header.php";

@@ -1,12 +1,4 @@
 /* stylesheet */
-div.jumbotron {
-  margin-bottom: 30px;
-}
-
-div.card-deck {
-  margin-bottom: 30px;
-}
-
 ol.breadcrumb {
   font-size: .8rem;
   border-radius: 0;
@@ -43,15 +35,6 @@ h5.titolo {
   margin-bottom: 15px;
 }
 
-#regioni .card-body > .d-flex > .w-100 span {
-  font-weight: bold;
-  color: #007bff;
-}
-
-#regioni .input-group > .form-control {
-  width: 250px;
-}
-
 .card-body table {
   margin-bottom: 0;
 }
@@ -60,8 +43,22 @@ h5.titolo {
   background-color: rgba(0, 0, 0, .03);
 }
 
-#regioni .card-body table tbody td:last-of-type,
-#regioni .card-body table tbody td:first-of-type {
+/* regioni */
+#regioni .card-body > .d-flex span {
+  font-weight: bold;
+  color: #007bff;
+}
+
+#regioni .card-body .form-control {
+  width: 250px;
+}
+
+#regioni .card-body table thead th:first-of-type {
+  text-align: center;
+}
+
+#regioni .card-body table tbody td:first-of-type,
+#regioni .card-body table tbody td:last-of-type {
   width: 1%;
   text-align: center;
   vertical-align: middle;
@@ -72,4 +69,21 @@ h5.titolo {
 
 #regioni .card-body table tbody td:last-of-type a:nth-child(2) {
   margin: 0 10px;
+}
+
+/* regione */
+#regione .card-body table tbody td:first-of-type {
+  width: 1%;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* modificaRegione */
+#modificaRegione form .form-control {
+  margin-bottom: 10px;
+}
+
+/* aggiungiRegione */
+#aggiungiRegione form .form-control {
+  margin-bottom: 10px;
 }

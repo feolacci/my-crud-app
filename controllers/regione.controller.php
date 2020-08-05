@@ -1,5 +1,6 @@
 <?php
 require_once "../models/regione.model.php";
+require_once "valid.inc.php";
 
 class RegioneController {
   public $database;
@@ -39,11 +40,13 @@ class RegioneController {
   public function actionCountProvince($get) {
     return $this->database->getCountProvincePerRegione($get);
   }
+} // RegioneController
 
-  // HELPER
-  public function errorHandler($msg) {
-    $myMsg = [];
-    $myMsg['message'] = $msg;
+class ErrorHandler {
+  static function view($msg) {
+    $stylesheet = ["/assets/css/error.css"];
+    
+    $error = ['message' => $msg];
   
     $breadcrumb = [
       ['label' => "Homepage", 'url' => "../index.php"],
@@ -52,10 +55,11 @@ class RegioneController {
     include "../views/layouts/header.php";
     include "../views/error.php";
     include "../views/layouts/footer.php";
-  } 
-} // RegioneController
+  }
+} // ErrorHandler
 
 $controller = new RegioneController();
+$valid = new Valid();
 
 if(isset($_GET['r'])) {
   $stylesheet = ["/assets/css/regione.css"];
@@ -81,29 +85,20 @@ if(isset($_GET['r'])) {
       break;
 
     case "regione":
-      if(isset($_GET['id'])) {
-        $regioni = $controller->actionRegioni();
-        $nomeRegione = array();
-        foreach ($regioni as $value) {
-          array_push($nomeRegione, $value['regione']);
-        }
-        if(in_array($_GET['id'], $nomeRegione)) {
-          $province = $controller->actionDettaglioRegione($_GET['id']);
-          $provinceCount = $controller->actionCountProvince($_GET['id']);
+      if(isset($_GET['id']) && $valid->id()) {
+        $province = $controller->actionDettaglioRegione($_GET['id']);
+        $provinceCount = $controller->actionCountProvince($_GET['id']);
 
-          $breadcrumb = [
-            ['label' => "Homepage", 'url' => "../index.php"],
-            ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
-            ['label' => $_GET['id']]
-          ];
-          include "../views/layouts/header.php";
-          include "../views/regione/provincePerRegione.php";
-          include "../views/layouts/footer.php";
-        } else {
-          $controller->errorHandler('Regione inesistente');
-        } 
+        $breadcrumb = [
+          ['label' => "Homepage", 'url' => "../index.php"],
+          ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
+          ['label' => $_GET['id']]
+        ];
+        include "../views/layouts/header.php";
+        include "../views/regione/provincePerRegione.php";
+        include "../views/layouts/footer.php";
       } else {
-        $controller->errorHandler('Operazione non consentita');
+        ErrorHandler::view("Operazione non consentita");
       }
       break;
 
@@ -119,65 +114,68 @@ if(isset($_GET['r'])) {
       break;
 
     case "modificaRegione":
-      if(isset($_GET['id'])) {
-        $regioni = $controller->actionRegioni();
-        $nomeRegioni = array();
-        foreach ($regioni as $value) {
-          array_push($nomeRegioni, $value['regione']);
-        }
-        if(in_array($_GET['id'], $nomeRegioni)) {
-          $nomeRegione = $controller->actionRegione($_GET['id']);
-          
-          $breadcrumb = [
-            ['label' => "Homepage", 'url' => "../index.php"],
-            ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
-            ['label' => $_GET['id'], 'url' => "regione.controller.php?r=regione&id=" . $_GET["id"]],
-            ['label' => "Modifica regione"]
-          ];
-          include "../views/layouts/header.php";
-          include "../views/regione/modificaRegione.php";
-          include "../views/layouts/footer.php";
-        } else {
-        $controller->errorHandler('Regione inesistente');
-        } 
+      if(isset($_GET['id']) && $valid->id()) {
+        $nomeRegione = $controller->actionRegione($_GET['id']);
+
+        $breadcrumb = [
+          ['label' => "Homepage", 'url' => "../index.php"],
+          ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
+          ['label' => $_GET['id'], 'url' => "regione.controller.php?r=regione&id=" . $_GET["id"]],
+          ['label' => "Modifica regione"]
+        ];
+        include "../views/layouts/header.php";
+        include "../views/regione/modificaRegione.php";
+        include "../views/layouts/footer.php";
       } else {
-        $controller->errorHandler('Operazione non consentita');
+        ErrorHandler::view('Operazione non consentita');
       }
       break;
     
     // Casi attivi
     case "addRegione":
-      $result = $controller->actionAggiungiRegione($_POST);
-      if($result) {
-        header("Location: regione.controller.php?r=regione&id=" . $_POST['nameRegione'] . "&msg=1");
+      if($valid->string($_POST['nameRegione'])) {
+        $result = $controller->actionAggiungiRegione($_POST['nameRegione']);
+        if($result) {
+          header("Location: regione.controller.php?r=regione&id=" . $_POST['nameRegione'] . "&msg=1");
+        } else {
+          header("Location: regione.controller.php?r=regione&id=" . $_POST['nameRegione'] . "&msg=0");
+        }
       } else {
-        header("Location: regione.controller.php?r=regione&id=" . $_POST['nameRegione'] . "&msg=0");
+        header("Location: regione.controller.php?r=aggiungiRegione&id=" . $_GET['id'] . "&msg=4");
       }
       break;
 
     case "editRegione":
-      $result = $controller->actionModificaRegione($_POST);
-      if($result) {
-        header("Location: regione.controller.php?r=regione&id=" . $_POST['nameRegione'] . "&msg=2");
+      if($valid->string($_POST['nameRegione'])) {
+        $result = $controller->actionModificaRegione($_POST['nameRegione']);
+        if($result) {
+          header("Location: regione.controller.php?r=regione&id=" . $_POST['nameRegione'] . "&msg=2");
+        } else {
+          header("Location: regione.controller.php?r=regione&id=" . $_POST['nameRegione'] . "&msg=0");
+        }
       } else {
-        header("Location: regione.controller.php?r=regione&id=" . $_POST['nameRegione'] . "&msg=0");
+        header("Location: regione.controller.php?r=modificaRegione&id=" . $_GET['id'] . "&msg=4");
       }
       break;
 
     case "deleteRegione":
-      $result = $controller->actionEliminaRegione($_GET['id']);
-      if($result) {
-        header("Location: regione.controller.php?r=regioni&msg=3");
+      if(isset($_GET['id']) && $valid->id()) {
+        $result = $controller->actionEliminaRegione($_GET['id']);
+        if($result) {
+          header("Location: regione.controller.php?r=regioni&msg=3");
+        } else {
+          header("Location: regione.controller.php?r=regioni&msg=0");
+        }
       } else {
-        header("Location: regione.controller.php?r=regioni&msg=0");
+        ErrorHandler::view("Errore");
       }
       break;
 
     default:
-    $controller->errorHandler('Risorsa non trovata');
+    ErrorHandler::view('Risorsa non trovata');
     break;
   }
   
 } else {
-  $controller->errorHandler('404 Not found');
+  ErrorHandler::view('404 Not found');
 }
