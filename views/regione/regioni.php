@@ -40,8 +40,8 @@
               echo "<td>" . $regioni[$i]['id_regione'] . "</td>";
               echo "<td>" . $regioni[$i]['regione'] . "</td>";
               echo "<td>
-                <a class='detail btn btn-primary btn-sm' href='regione.controller.php?r=regione&id=" . $regioni[$i]['regione'] . "' data-toggle='tooltip' title='Dettaglio regione'><i class='fa fa-eye'></i></a>
-                <a class='detail btn btn-primary btn-sm' href='regione.controller.php?r=modificaRegione&id=" . $regioni[$i]['regione'] . "' data-toggle='tooltip' title='Modifica regione'><i class='fa fa-pencil'></i></a>
+                <a class='btn btn-primary btn-sm' href='regione.controller.php?r=regione&id=" . $regioni[$i]['regione'] . "' data-toggle='tooltip' title='Dettaglio regione'><i class='fa fa-eye'></i></a>
+                <a class='btn btn-primary btn-sm' href='regione.controller.php?r=modificaRegione&id=" . $regioni[$i]['regione'] . "' data-toggle='tooltip' title='Modifica regione'><i class='fa fa-pencil'></i></a>
                 <a class='delete btn btn-danger btn-sm' href='regione.controller.php?r=deleteRegione&id=" . $regioni[$i]['regione'] . "' data-toggle='tooltip' title='Rimuovi regione'><i class='fa fa-times'></i></a>
               </td>";
               echo "</tr>";

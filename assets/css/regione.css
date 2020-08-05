@@ -72,6 +72,10 @@ h5.titolo {
 }
 
 /* regione */
+#regione .card-header a:last-of-type {
+  margin-right: 15px;
+}
+
 #regione .card-body table tbody td:first-of-type {
   width: 1%;
   text-align: center;
@@ -80,10 +84,10 @@ h5.titolo {
 
 /* modificaRegione */
 #modificaRegione form .form-control {
-  margin-bottom: 10px;
+  margin-bottom: .5rem;
 }
 
 /* aggiungiRegione */
 #aggiungiRegione form .form-control {
-  margin-bottom: 10px;
+  margin-bottom: .5rem;
 }

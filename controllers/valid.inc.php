@@ -19,7 +19,10 @@ class Valid {
   }
 
   public function string($post) {
+    $post = trim($post);
+    $post = ucfirst($post);
+    
     $result = preg_match('/^[a-zA-Z -]+$/', $post);
-    return $result;
+    return $result ? $post : false;
   }
 } // Valid

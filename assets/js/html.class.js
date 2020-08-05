@@ -19,5 +19,6 @@ class Html {
     div.append(button);
 
     prepend ? target.append(div) : target.prepend(div);
+    return div;
   }
 }

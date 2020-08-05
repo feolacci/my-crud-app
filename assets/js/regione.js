@@ -16,7 +16,13 @@ class RegioneController {
       switch(msg) {
         case '4':
           var target = document.querySelector('form .form-group');
-          Html.alert('danger', "Nome regione non valido.", target, true);
+          var alert = Html.alert('danger', "Il valore inserito non sembra essere valido.", target, true);
+          
+          var input = document.querySelector('form .form-control');
+          input.addEventListener('input', function handler() {
+            alert.parentNode.removeChild(alert);
+            input.removeEventListener('input', handler);
+          });
           break;
         case '3':
           Html.alert('success', "La regione è stata eliminata con successo.");

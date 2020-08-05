@@ -43,10 +43,11 @@ class RegioneController {
 } // RegioneController
 
 class ErrorHandler {
-  static function view($msg) {
+  static function view($msg, $code = false) {
     $stylesheet = ["/assets/css/error.css"];
     
     $error = ['message' => $msg];
+    if($code) {$error['code'] = $code;}
   
     $breadcrumb = [
       ['label' => "Homepage", 'url' => "../index.php"],
@@ -98,7 +99,7 @@ if(isset($_GET['r'])) {
         include "../views/regione/provincePerRegione.php";
         include "../views/layouts/footer.php";
       } else {
-        ErrorHandler::view("Operazione non consentita");
+        ErrorHandler::view("Oops! È imbarazzante. Cerchi qualcosa che non esiste...", "404");
       }
       break;
 
@@ -127,16 +128,16 @@ if(isset($_GET['r'])) {
         include "../views/regione/modificaRegione.php";
         include "../views/layouts/footer.php";
       } else {
-        ErrorHandler::view('Operazione non consentita');
+        ErrorHandler::view("Oops! È imbarazzante. Cerchi qualcosa che non esiste...", "404");
       }
       break;
     
     // Casi attivi
     case "addRegione":
-      if($valid->string($_POST['nameRegione'])) {
-        $result = $controller->actionAggiungiRegione($_POST['nameRegione']);
+      if($post = $valid->string($_POST['nameRegione'])) {
+        $result = $controller->actionAggiungiRegione($post);
         if($result) {
-          header("Location: regione.controller.php?r=regione&id=" . $_POST['nameRegione'] . "&msg=1");
+          header("Location: regione.controller.php?r=regione&id=" . $post . "&msg=1");
         } else {
           header("Location: regione.controller.php?r=regione&id=" . $_POST['nameRegione'] . "&msg=0");
         }
@@ -146,10 +147,10 @@ if(isset($_GET['r'])) {
       break;
 
     case "editRegione":
-      if($valid->string($_POST['nameRegione'])) {
-        $result = $controller->actionModificaRegione($_POST['nameRegione']);
+      if($post = $valid->string($_POST['nameRegione'])) {
+        $result = $controller->actionModificaRegione($post);
         if($result) {
-          header("Location: regione.controller.php?r=regione&id=" . $_POST['nameRegione'] . "&msg=2");
+          header("Location: regione.controller.php?r=regione&id=" . $post . "&msg=2");
         } else {
           header("Location: regione.controller.php?r=regione&id=" . $_POST['nameRegione'] . "&msg=0");
         }
@@ -167,15 +168,15 @@ if(isset($_GET['r'])) {
           header("Location: regione.controller.php?r=regioni&msg=0");
         }
       } else {
-        ErrorHandler::view("Errore");
+        ErrorHandler::view("Errore generico senza alcun dettaglio.", "500");
       }
       break;
 
     default:
-    ErrorHandler::view('Risorsa non trovata');
+    ErrorHandler::view("Il server non è in grado di soddisfare il metodo della richiesta.", "501");
     break;
   }
   
 } else {
-  ErrorHandler::view('404 Not found');
+  ErrorHandler::view("Non hai l'autorizzazione per visualizzare questa pagina.", "403");
 }

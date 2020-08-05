@@ -49,7 +49,7 @@ class Database {
       $this->error = $ex->getMessage();
 
       return array(
-        'message' => "Query error: " .   $this->error,
+        'message' => "Query error: " . $this->error,
         'line' => $ex->getLine()
       );
     }
@@ -77,7 +77,7 @@ class Database {
       $this->error = $ex->getMessage();
 
       return array(
-        'message' => "Query error: " .   $this->error,
+        'message' => "Query error: " . $this->error,
         'line' => $ex->getLine()
       );
     }
@@ -101,7 +101,7 @@ class Database {
       $this->error = $ex->getMessage();
 
       return array(
-        'message' => "Query error: " .   $this->error,
+        'message' => "Query error: " . $this->error,
         'line' => $ex->getLine()
       );
     }
@@ -125,7 +125,7 @@ class Database {
       $this->error = $ex->getMessage();
 
       return array(
-        'message' => "Query error: " .   $this->error,
+        'message' => "Query error: " . $this->error,
         'line' => $ex->getLine()
       );
     }
@@ -193,7 +193,7 @@ class Database {
       $this->error = $ex->getMessage();
 
       return array(
-        'message' => "Query error: " .   $this->error,
+        'message' => "Query error: " . $this->error,
         'line' => $ex->getLine()
       );
     }
