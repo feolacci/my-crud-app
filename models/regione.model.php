@@ -1,36 +1,7 @@
 <?php
-require_once "../config/database.config.php";
+require_once "database.inc.php";
 
-class Database {
-  private $hostname = DB_HOST;
-  private $user = DB_USER;
-  private $pass = DB_PASS;
-  private $dbname = DB_NAME;
-  private $dbConn;
-  private $stmt;
-  private $error;
-
-  public function __construct() {
-    $dsn = 'mysql:host=' . $this->hostname . ';dbname=' . $this->dbname;
-
-    $options = array(
-      PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
-      PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-    );
-
-    try {
-      $this->dbConn = new PDO($dsn, $this->user, $this->pass, $options);
-      return array('message' => "Connection OK");
-
-    } catch(PDOException $ex) {
-      $this->error = $ex->getMessage();
-      
-      return array(
-        'message' => "Connection error: " . $this->error,
-        'line' => $ex->getLine());
-    }
-  } // __construct
-
+class Regione extends Database {
   public function getRegioni() {
     $query = "SELECT * FROM regioni";
 
@@ -198,4 +169,4 @@ class Database {
       );
     }
   } // getCountProvincePerRegione
-} // Database
+} // Regione

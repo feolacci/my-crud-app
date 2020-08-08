@@ -2,14 +2,14 @@
 require_once "../models/regione.model.php";
 
 class Valid {
-  public $database;
+  public $regione;
 
   public function __construct() {
-    $this->database = new Database();
+    $this->regione = new Regione();
   }
   
   public function id() {
-    $results = $this->database->getRegioni();
+    $results = $this->regione->getRegioni();
 
     foreach($results as $row) {
       $regioni[] = $row['regione'];
@@ -23,6 +23,14 @@ class Valid {
     $post = ucfirst($post);
     
     $result = preg_match('/^[a-zA-Z -]+$/', $post);
+    return $result ? $post : false;
+  }
+
+  public function sigla($post) {
+    $post = trim($post);
+    $post = strtoupper($post);
+
+    $result = preg_match('/^(?=.{2}$)[a-zA-Z]+$/', $post);
     return $result ? $post : false;
   }
 } // Valid

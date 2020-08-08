@@ -76,6 +76,14 @@ h5.titolo {
   margin-right: 15px;
 }
 
+#regione h5.titolo {
+  margin-bottom: 0;
+}
+
+#regione .flex-shrink-0 a i {
+  margin-right: 10px;
+}
+
 #regione .card-body table tbody td:first-of-type {
   width: 1%;
   text-align: center;

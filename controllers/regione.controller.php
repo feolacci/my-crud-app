@@ -3,42 +3,42 @@ require_once "../models/regione.model.php";
 require_once "valid.inc.php";
 
 class RegioneController {
-  public $database;
+  public $regione;
 
   public function __construct() {
-    $this->database = new Database();
+    $this->regione = new Regione();
   }
 
   public function actionRegioni() {
-    return $this->database->getRegioni();
+    return $this->regione->getRegioni();
   }
 
   public function actionCercaRegioni($post) {
-    return $this->database->getCercaRegioni($post);
+    return $this->regione->getCercaRegioni($post);
   }
 
   public function actionRegione($get) {
-    return $this->database->getRegione($get);
+    return $this->regione->getRegione($get);
   }
 
   public function actionDettaglioRegione($get) {
-    return $this->database->getProvincePerRegione($get);
+    return $this->regione->getProvincePerRegione($get);
   }
 
   public function actionAggiungiRegione($post) {
-    return $this->database->setAddRegione($post);
+    return $this->regione->setAddRegione($post);
   }
 
   public function actionModificaRegione($post) {
-    return $this->database->setEditRegione($post);
+    return $this->regione->setEditRegione($post);
   }
 
   public function actionEliminaRegione($get) {
-    return $this->database->setDeleteRegione($get);
+    return $this->regione->setDeleteRegione($get);
   }
 
   public function actionCountProvince($get) {
-    return $this->database->getCountProvincePerRegione($get);
+    return $this->regione->getCountProvincePerRegione($get);
   }
 } // RegioneController
 
@@ -66,8 +66,10 @@ if(isset($_GET['r'])) {
   $stylesheet = ["/assets/css/regione.css"];
   $script = [
     "/assets/js/page.class.js",
-    "/assets/js/regione.js",
-    "/assets/js/html.class.js"
+    "/assets/js/regione.js",    
+    "/assets/js/provincia.js",    
+    "/assets/js/html.class.js",
+    "/assets/js/ajax.class.js"
   ];
 
   switch($_GET['r']) {
