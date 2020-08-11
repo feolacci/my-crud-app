@@ -31,6 +31,18 @@
         <li class="nav-item">
           <a href="/controllers/regione.controller.php?r=regioni" class="nav-link">Regioni italiane</a>
         </li>
+        <?php if(!isset($_SESSION["email"])) { ?>
+          <li class="nav-item">
+            <a href="/controllers/auth.controller.php?r=login" class="nav-link">Accedi</a>
+          </li>
+          <li class="nav-item">
+            <a href="/controllers/auth.controller.php?r=signup" class="nav-link">Registrati</a>
+          </li>
+        <?php } else { ?>
+          <li class="nav-item">
+            <a href="/controllers/auth.controller.php?r=logout" class="nav-link">Esci (<?= $_SESSION["email"] ?>)</a>
+          </li>
+        <?php } ?>
       </ul>
     </div>
   </nav>

@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 // Run application
 $stylesheet = ["/assets/css/index.css"];
 $script = ["/assets/js/page.class.js"];

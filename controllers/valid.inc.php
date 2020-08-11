@@ -46,4 +46,13 @@ class Valid {
     $result = preg_match('/^(?=.{2}$)[a-zA-Z]+$/', $post);
     return $result ? $post : false;
   }
+
+  public function email($post) {
+    return filter_var($post, FILTER_VALIDATE_EMAIL);
+  }
+
+  public function password($post) {
+    $result = preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/", $post);
+    return $result ? $post : false;
+  }
 } // Valid

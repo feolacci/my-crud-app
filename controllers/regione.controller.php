@@ -54,6 +54,14 @@ if(isset($_GET['r'])) {
     "/assets/js/html.class.js"
   ];
 
+  session_start();
+  
+  if(!isset($_SESSION["email"])) {
+    header("Location: auth.controller.php?r=login");
+    exit();
+  }
+  
+
   switch($_GET['r']) {
     // Casi passivi
     case "regioni":
