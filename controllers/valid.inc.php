@@ -1,14 +1,17 @@
 <?php
 require_once "../models/regione.model.php";
+require_once "../models/provincia.model.php";
 
 class Valid {
   public $regione;
+  public $provincia;
 
   public function __construct() {
     $this->regione = new Regione();
+    $this->provincia = new Provincia();
   }
   
-  public function id() {
+  public function idRegione() {
     $results = $this->regione->getRegioni();
 
     foreach($results as $row) {
@@ -16,6 +19,16 @@ class Valid {
     }
 
     return in_array($_GET['id'], $regioni);
+  }
+
+  public function idProvincia($get) {
+    $results = $this->provincia->getProvince();
+
+    foreach($results as $row) {
+      $province[] = $row['id_province'];
+    }
+
+    return in_array($get, $province);
   }
 
   public function string($post) {

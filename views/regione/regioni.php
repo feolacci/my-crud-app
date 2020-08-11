@@ -33,7 +33,6 @@
             </tr>
           </thead>
           <tbody>
-
             <?php
             for($i = 0; $i < count($regioni); $i++) {
               echo "<tr>";
@@ -42,12 +41,11 @@
               echo "<td>
                 <a class='btn btn-primary btn-sm' href='regione.controller.php?r=regione&id=" . $regioni[$i]['regione'] . "' data-toggle='tooltip' title='Dettaglio regione'><i class='fa fa-eye'></i></a>
                 <a class='btn btn-primary btn-sm' href='regione.controller.php?r=modificaRegione&id=" . $regioni[$i]['regione'] . "' data-toggle='tooltip' title='Modifica regione'><i class='fa fa-pencil'></i></a>
-                <a class='delete btn btn-danger btn-sm' href='regione.controller.php?r=deleteRegione&id=" . $regioni[$i]['regione'] . "' data-toggle='tooltip' title='Rimuovi regione'><i class='fa fa-times'></i></a>
+                <a class='deleteRegioneTrigger btn btn-danger btn-sm' href='regione.controller.php?r=deleteRegione&id=" . $regioni[$i]['regione'] . "' data-toggle='tooltip' title='Rimuovi regione'><i class='fa fa-times'></i></a>
               </td>";
               echo "</tr>";
             }
             ?>
-
           </tbody>
         </table>
         <?php
@@ -55,26 +53,6 @@
           echo $regioni['message'];
         }
         ?>
-      </div>
-    </div>
-  </div>
-
-  <div id="deleteModal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Rimuovi regione</h5>
-          <button type="button" class="close" data-dismiss="modal">
-            <span>&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Sei sicuro di voler rimuovere la regione selezionata?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-          <button type="button" class="btn btn-danger">Rimuovi</button>
-        </div>
       </div>
     </div>
   </div>

@@ -6,7 +6,7 @@ class RegioneController {
   constructor() {
     $('[data-toggle="tooltip"]').tooltip();
     this.alertHandler();
-    this.deleteModal();
+    this.deleteRegione();
   }
 
   alertHandler() {
@@ -43,21 +43,30 @@ class RegioneController {
     }
   }
 
-  deleteModal() {
-    var deleteTriggers = document.querySelectorAll('.delete');
-
+  deleteRegione() {
+    var deleteTriggers = document.querySelectorAll('.deleteRegioneTrigger');
     deleteTriggers.forEach(deleteTrigger => {
       deleteTrigger.addEventListener('click', (event) => {
         event.preventDefault();
         var deleteTriggerHref = event.currentTarget.getAttribute('href');
 
-        $('#deleteModal').modal('show');
-        
-        var button = document.querySelector('.modal-footer button:last-of-type');
-        button.addEventListener('click', () => {
-          $('#deleteModal').modal('hide');
-          window.location.href = deleteTriggerHref;
-        });
+        var modal = document.getElementById('deleteRegione');
+        if(!modal) {
+          Html.modal(
+            'deleteRegione',
+            'Rimuovi regione',
+            'Sei sicuro di voler rimuovere la regione selezionata?',
+            ['btn-danger', 'Rimuovi']
+          );
+
+          var button = document.querySelector('#deleteRegione .submit');
+          button.addEventListener('click', () => {
+            $('#deleteRegione').modal('hide');
+            window.location.href = deleteTriggerHref;
+          });
+        }
+
+        $('#deleteRegione').modal('show');
       });
     });
   }

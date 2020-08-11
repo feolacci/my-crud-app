@@ -67,6 +67,10 @@ h5.titolo {
   padding-bottom: 0;
 }
 
+#regioni .card-body table tbody td:last-of-type {
+  font-size: 0;
+}
+
 #regioni .card-body table tbody td:last-of-type a:nth-child(2) {
   margin: 0 10px;
 }
@@ -84,10 +88,22 @@ h5.titolo {
   margin-right: 10px;
 }
 
-#regione .card-body table tbody td:first-of-type {
+#regione .card-body table tbody td:first-of-type,
+#regione .card-body table tbody td:last-of-type {
   width: 1%;
   text-align: center;
+  vertical-align: middle;
   white-space: nowrap;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+#regione .card-body table tbody td:last-of-type {
+  font-size: 0;
+}
+
+#regione .card-body table tbody td:last-of-type a:last-of-type {
+  margin: 0 0 0 10px;
 }
 
 /* modificaRegione */
