@@ -8,7 +8,7 @@ class AuthController {
   }
 
   alertHandler() {
-		var target = document.querySelector("form");
+		var target = document.querySelector("form div:last-of-type");
 		var msg = Page.getParameterByName('msg');		
 
     if(msg) {

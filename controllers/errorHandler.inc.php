@@ -1,7 +1,10 @@
 <?php
 class ErrorHandler {
   static function view($msg, $code = false) {
-    $stylesheet = ["/assets/css/error.css"];
+    $stylesheet = [
+      "/assets/css/error.css",
+      "/assets/css/common.css"
+    ];
     
     $error = ['message' => $msg];
     if($code) {$error['code'] = $code;}

@@ -27,7 +27,10 @@ $controller = new AuthController();
 $valid = new Valid();
 
 if(isset($_GET['r'])) {
-  $stylesheet = ["/assets/css/auth.css"];
+  $stylesheet = [
+    "/assets/css/auth.css",
+    "/assets/css/common.css"
+  ];
   $script = [
     "/assets/js/page.class.js",
     "/assets/js/auth.js",

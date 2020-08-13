@@ -47,7 +47,10 @@ $controller = new RegioneController();
 $valid = new Valid();
 
 if(isset($_GET['r'])) {
-  $stylesheet = ["/assets/css/regione.css"];
+  $stylesheet = [
+    "/assets/css/regione.css",
+    "/assets/css/common.css"
+  ];
   $script = [
     "/assets/js/page.class.js",
     "/assets/js/regione.js",

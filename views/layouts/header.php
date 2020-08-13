@@ -17,7 +17,10 @@
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a href="/index.php" class="navbar-brand">My CRUD</a>
+    <a class="navbar-brand" href="/index.php">
+      <img src="/assets/images/flag-of-italy-xs.png" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+      <span class="ml-3">My CRUD</span>
+    </a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
