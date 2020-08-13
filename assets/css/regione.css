@@ -92,6 +92,10 @@ h5.titolo {
   margin: 0 0 0 10px;
 }
 
+#regione #wrapper p {
+  margin-bottom: 0;
+}
+
 /* modificaRegione */
 #modificaRegione form .form-control {
   margin-bottom: .5rem;

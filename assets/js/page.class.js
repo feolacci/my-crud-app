@@ -24,6 +24,7 @@ class Page {
 
   updateNavbar() {
     var url = window.location.href;
+    var param = Page.getParameterByName('r', url);
     var pathname = url.substring(
       url.lastIndexOf('/') + 1,
       url.indexOf('?')
@@ -31,18 +32,21 @@ class Page {
 
     var navItems = document.querySelectorAll('ul.navbar-nav .nav-item > a');
     navItems.forEach(navItem => {
+      var navItemParam = Page.getParameterByName('r', navItem.href);
       var navItemPathname = navItem.href.substring(
         navItem.href.lastIndexOf('/') + 1,
         navItem.href.indexOf('?')
       );
-      
-      if(pathname == navItemPathname) {
+
+      if(param == navItemParam && pathname == navItemPathname) {
         navItem.parentElement.classList.add('active');
       }
     });
   }
 
   static getParameterByName(name, url) {
+    // https://stackoverflow.com/a/901144
+    
     if(!url) {url = window.location.href;}
     name = name.replace(/[\[\]]/g, '\\$&');
     var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),

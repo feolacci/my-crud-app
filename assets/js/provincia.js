@@ -4,12 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 class ProvinciaController {
   constructor() {
-    this.table();
+    this.createTable();
     this.addProvincia();
-    
   }
 
-  table() {
+  createTable() {
     Ajax.basic(
       "provincia.controller.php?r=province&id=" + Page.getParameterByName('id'),
       (results) => {
@@ -23,15 +22,19 @@ class ProvinciaController {
             ]);
           });
 
-          new Table({
+          this.table = new Table({
             columns: ["Sigla", "Provincia", null],
             data: data
           }).render(document.getElementById('wrapper'));
 
-          this.deleteProvincia();
+          var deleteTriggers = document.querySelectorAll('.deleteProvinciaTrigger');
+          this.deleteProvincia(deleteTriggers);
         } else {
+          this.table = null;
+          
           var wrapper = document.getElementById('wrapper');
           wrapper.textContent = "";
+
           var p = document.createElement('p');
           p.textContent = results.message;
           wrapper.appendChild(p);
@@ -89,44 +92,71 @@ class ProvinciaController {
     var self = this, form;
     var action = "provincia.controller.php?r=addProvincia&id=" + Page.getParameterByName('id');
 
-    var addTriggers = document.querySelectorAll('.addProvinciaTrigger');
-    addTriggers.forEach(addTrigger => {
-      addTrigger.addEventListener('click', (event) => {
-        event.preventDefault();
+    var addTrigger = document.querySelector('.addProvinciaTrigger');
+    addTrigger.addEventListener('click', (event) => {
+      event.preventDefault();
 
-        var modal = document.getElementById('addProvincia');
-        if(!modal) {
-          Html.modal(
-            'addProvincia',
-            'Aggiungi provincia',
-            this.form(),
-            ['btn-success', 'Aggiungi']
-          );
+      var modal = document.getElementById('addProvincia');
+      if(!modal) {
+        Html.modal(
+          'addProvincia',
+          'Aggiungi provincia',
+          this.form(),
+          ['btn-success', 'Aggiungi']
+        );
 
-          form = document.querySelector('#addProvincia form');
-          var button = document.querySelector('#addProvincia .submit');
-          button.addEventListener('click', () => {
-            Ajax.form(action, form, (result) => {
-              !result.error ? success(result) : error();
-            });
+        form = document.querySelector('#addProvincia form');
+        var button = document.querySelector('#addProvincia .submit');
+        button.addEventListener('click', () => {
+          Ajax.form(action, form, (result) => {
+            !result.error ? success(result) : error();
           });
-        }
+        });
+      }
 
-        $('#addProvincia').modal('show');
-      });
+      $('#addProvincia').modal('show');
     });
 
     function success(result) {
       $('#addProvincia').modal('hide');
       form.reset();
-      self.table();
+      
+      if(self.table) {
+        var div = document.createElement('div');
+        div.textContent = result.nameProvincia;
+
+        var span = document.createElement('span');
+        span.classList.add('badge', 'badge-success', 'ml-2');
+        span.textContent = "NUOVA";
+        div.appendChild(span);
+
+        const row = self.table.insertRow([
+          result.siglaProvincia,
+          div,
+          Table.controls(result.idProvincia)
+        ], true);
+
+        row.style.backgroundColor = "#f9fbe7";
+        setTimeout(() => {
+          span.parentNode.removeChild(span);
+          row.style.removeProperty('background-color');
+        }, 3000);
+
+        var deleteTriggers = row.querySelectorAll('.deleteProvinciaTrigger');
+        self.deleteProvincia(deleteTriggers);
+      } else {
+        self.createTable();
+      }
+
+      var badge = document.querySelector('h5.titolo span');
+      badge.textContent = Number(badge.textContent) + 1;
     }
 
     function error() {
-      var alert = document.querySelector("#addProvincia .modal-body .alert-danger");
+      var alert = document.querySelector('#addProvincia .modal-body .alert-danger');
       
       if(!alert) {
-        var target = document.querySelector("#addProvincia .modal-body");
+        var target = document.querySelector('#addProvincia .modal-body');
         alert = Html.alert('danger', 'I valori inseriti non sembrano essere validi.', target, true);
 
         var inputs = document.querySelectorAll('#addProvincia .form-control');
@@ -139,15 +169,14 @@ class ProvinciaController {
     }
   }
 
-  deleteProvincia() {
-    var self = this, currentTarget;
+  deleteProvincia(deleteTriggers) {
+    var self = this;
 
-    var deleteTriggers = document.querySelectorAll('.deleteProvinciaTrigger');
     deleteTriggers.forEach(deleteTrigger => {
       deleteTrigger.addEventListener('click', (event) => {
         event.preventDefault();
-        currentTarget = event.currentTarget;
-        var action = event.currentTarget.getAttribute('href');
+        this.currentTarget = event.currentTarget.parentNode.parentNode.parentNode;
+        this.action = event.currentTarget.getAttribute('href');
 
         var modal = document.getElementById('deleteProvincia');
         if(!modal) {
@@ -160,8 +189,8 @@ class ProvinciaController {
 
           var button = document.querySelector('#deleteProvincia .submit');
           button.addEventListener('click', () => {
-            Ajax.basic(action, (result) => {
-              !result.error ? success(result) : error(result);
+            Ajax.basic(this.action, (result) => {
+              if(!result.error) {success();}
             });
           });
         }
@@ -170,13 +199,15 @@ class ProvinciaController {
       });
     });
 
-    function success(result) {
+    function success() {
       $('#deleteProvincia').modal('hide');
-      self.table();
-    }
+      self.currentTarget.parentNode.removeChild(self.currentTarget);
+      
+      var numRows = document.querySelectorAll('tbody > tr').length;
+      if(!numRows) {self.createTable();}
 
-    function error(result) {
-      console.log(result);
+      var badge = document.querySelector('h5.titolo span');
+      badge.textContent = Number(badge.textContent) - 1;
     }
   }
 }

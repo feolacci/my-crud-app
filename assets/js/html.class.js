@@ -90,45 +90,54 @@ class Html {
 
 class Table extends Html {
   constructor(object) {
-    var table;
-    table = document.createElement('table');
-    table.classList.add('table', 'table-hover', 'table-bordered');
+    super();
+    this.table = document.createElement('table');
+    this.table.classList.add('table', 'table-hover', 'table-bordered');
     
-    var thead = table.createTHead();
+    var thead = this.table.createTHead();
     var tr = thead.insertRow();
 
-    object.columns.forEach(element => {
+    object.columns.forEach(array => {
       var th = document.createElement('th');
-      th.textContent = element;
+      th.textContent = array;
       tr.appendChild(th);
     });
 
     thead.appendChild(tr);
-    table.appendChild(thead);
+    this.table.appendChild(thead);
 
-    var tbody = table.createTBody();
-    
-    object.data.forEach(element => {
-      tr = tbody.insertRow();
+    this.tbody = this.table.createTBody();
 
-      for(let i = 0; i < element.length; i++) {
-        var td = document.createElement('td');
-        typeof element[i] === 'string' ? td.textContent = element[i] : td.appendChild(element[i]);
-        tr.appendChild(td);
-      }
-
-      tbody.appendChild(tr);
+    object.data.forEach(array => {
+      this.insertRow(array);
     });
 
-    table.appendChild(tbody);
-
-    super();
-    this.table = table;
+    this.table.appendChild(this.tbody);
   }
 
   render(wrapper) {
     wrapper.textContent = '';
     wrapper.appendChild(this.table);
+    return this;
+  }
+
+  insertRow(array, prepend = false) {
+    var tr = this.tbody.insertRow();
+
+    for(let i = 0; i < array.length; i++) {
+      var td = document.createElement('td');
+      typeof array[i] === 'string' ? td.textContent = array[i] : td.appendChild(array[i]);
+      tr.appendChild(td);
+    }
+
+    if(prepend) {
+      var referenceNode = this.tbody.querySelector('tr:first-of-type');
+      this.tbody.insertBefore(tr, referenceNode);
+    } else {
+      this.tbody.appendChild(tr);
+    }
+
+    return tr;
   }
 
   static controls(idProvincia) {
