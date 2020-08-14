@@ -1,32 +1,22 @@
 /* stylesheet */
-
-.card {
-  margin-bottom: 30px;
-}
-
-.card-header button {
+#error .card-header button {
   float: right;
 }
 
-.card-header button i {
+#error .card-header button i {
   margin-right: 10px;
 }
 
-.card-body {
+#error .card-body {
   text-align: center;
 }
 
-h4.titolo {
-  display: inline-block;
-  margin-bottom: 0;
-}
-
-h5.titolo {
+#error .card-body h5.titolo {
   color: #dc3545;
   margin-bottom: 15px;
 }
 
-img {
+#error .card-body img {
   width: 300px;
   height: 300px;
 }

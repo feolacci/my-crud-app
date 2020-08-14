@@ -126,8 +126,8 @@ class ProvinciaController {
         div.textContent = result.nameProvincia;
 
         var span = document.createElement('span');
-        span.classList.add('badge', 'badge-success', 'ml-2');
-        span.textContent = "NUOVA";
+        span.classList.add('badge', 'badge-pill', 'badge-success', 'ml-2');
+        span.textContent = "NUOVO";
         div.appendChild(span);
 
         const row = self.table.insertRow([

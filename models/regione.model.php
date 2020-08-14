@@ -3,7 +3,7 @@ require_once "database.inc.php";
 
 class Regione extends Database {
   public function getRegioni() {
-    $query = "SELECT * FROM regioni";
+    $query = "SELECT * FROM regioni ORDER BY regione";
 
     try {
       $this->stmt = $this->dbConn->prepare($query);
@@ -77,30 +77,6 @@ class Regione extends Database {
       );
     }
   } // getRegione
-
-  public function getProvincePerRegione($get) {
-    $query = "SELECT * FROM province WHERE regione = :regione";
-
-    try {
-      $this->stmt = $this->dbConn->prepare($query);
-      $this->stmt->execute(array(':regione' => $get));
-
-      if($this->stmt->rowCount() > 0) {
-        $province = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $province;
-      } else {
-        return array('message' => "Non è stata trovata nessuna provincia.");
-      }
-
-    } catch(PDOException $ex) {
-      $this->error = $ex->getMessage();
-
-      return array(
-        'message' => "Query error: " . $this->error,
-        'line' => $ex->getLine()
-      );
-    }
-  } // getProvincePerRegione
 
   public function setAddRegione($post) {
     $query = "INSERT INTO regioni (regione) VALUES (:regione)";

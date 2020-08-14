@@ -1,6 +1,10 @@
 # My CRUD application
 
+### :computer: Live preview
+[http://federicopaolacci.com/temp/my-crud-app/web/](http://federicopaolacci.com/temp/my-crud-app/web/)
+
 ### :newspaper: Latest news
+ - [14/08/2020] Aggiornato il database.
  - [30/07/2020] Aggiunti nuovi task da completare.
 
 ### :rainbow: Getting started
@@ -33,8 +37,11 @@
  - [x] Aggiungere la funzionalità "*Modifica regione*".
  - [x] Aggiungere la funzionalità "*Elimina regione*".
  - [x] Aggiungere la funzionalità "*Ricerca regione*".
- - [ ] Rendere le funzionalità "*Crea regione*" e "*Modifica regione*" asincrone.
+ - [ ] ~~Rendere le funzionalità "*Crea regione*", "*Modifica regione*" e "*Elimina regione*" asincrone~~.
+ - [x] Aggiungere la funzionalità asincrona "*Crea provincia*".
+ - [ ] Aggiungere la funzionalità asincrona "*Modifica provincia*".
+ - [x] Aggiungere la funzionalità asincrona "*Elimina provincia*".
  - [x] Personalizzare le finestre di dialogo Javascript.
  - [x] Rendere le "*Breadcrumb*" dinamiche.
- - [ ] Migliorare le misure di sicurezza dell'applicativo.
- - [ ] Implementare un sistema di autenticazione.
+ - [x] Migliorare le misure di sicurezza dell'applicativo.
+ - [x] Implementare un sistema di autenticazione.

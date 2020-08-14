@@ -2,7 +2,10 @@
 session_start();
 
 // Run application
-$stylesheet = ["/assets/css/index.css"];
+$stylesheet = [
+  "/assets/css/common.css",
+  "/assets/css/index.css"
+];
 $script = ["/assets/js/page.class.js"];
 
 require "./views/layouts/header.php";

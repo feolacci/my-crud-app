@@ -1,32 +1,6 @@
 /* stylesheet */
-
-.card {
-  margin-bottom: 30px;
-}
-
-.card-header a {
-  float: right;
-}
-
-.card-header a i {
-  margin-right: 10px;
-}
-
-h4.titolo {
-  display: inline-block;
-  margin-bottom: 0;
-}
-
-h5.titolo {
+.card-body h5.titolo {
   margin-bottom: 15px;
-}
-
-.card-body table {
-  margin-bottom: 0;
-}
-
-.table-hover tbody tr:hover {
-  background-color: rgba(0, 0, 0, .03);
 }
 
 /* regioni */
@@ -64,6 +38,12 @@ h5.titolo {
 /* regione */
 #regione .card-header a:last-of-type {
   margin-right: 15px;
+}
+
+.card-body .media img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
 }
 
 #regione h5.titolo {

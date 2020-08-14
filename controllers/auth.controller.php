@@ -28,8 +28,8 @@ $valid = new Valid();
 
 if(isset($_GET['r'])) {
   $stylesheet = [
-    "/assets/css/auth.css",
-    "/assets/css/common.css"
+    "/assets/css/common.css",
+    "/assets/css/auth.css"
   ];
   $script = [
     "/assets/js/page.class.js",
@@ -40,10 +40,15 @@ if(isset($_GET['r'])) {
   switch($_GET['r']) {
     // Casi passivi
     case "login":
+      if(isset($_SESSION["email"])) {
+        header("Location: ../index.php");
+        exit();
+      }
 
+      $title = "Accedi al tuo account";
       $breadcrumb = [
         ['label' => "Homepage", 'url' => "../index.php"],
-        ['label' => "Login"] // Active non ha url
+        ['label' => "Accedi al tuo account"]
       ];
       include "../views/layouts/header.php";
       include "../views/auth/login.php";
@@ -51,9 +56,15 @@ if(isset($_GET['r'])) {
       break;
 
     case "signup":
+      if(isset($_SESSION["email"])) {
+        header("Location: ../index.php");
+        exit();
+      }
+
+      $title = "Registrazione";
       $breadcrumb = [
         ['label' => "Homepage", 'url' => "../index.php"],
-        ['label' => "Registrazione"] // Active non ha url
+        ['label' => "Registrazione"]
       ];
       include "../views/layouts/header.php";
       include "../views/auth/signup.php";
@@ -66,6 +77,7 @@ if(isset($_GET['r'])) {
         'email' => $valid->email($_POST['email']),
         'password' => $valid->password($_POST['password'])
       ];
+      
       if(!in_array(false, $post)) {
         $result = $controller->actionLogin($post);
       
@@ -78,7 +90,7 @@ if(isset($_GET['r'])) {
         }
       } else { // dati non validati
         header("Location: auth.controller.php?r=login&msg=0");
-      }      
+      }
       break;
 
     case "submitSignup":

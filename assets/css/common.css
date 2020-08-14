@@ -1,3 +1,4 @@
+/* stylesheet */
 ol.breadcrumb {
   font-size: .8rem;
   border-radius: 0;
@@ -11,4 +12,55 @@ ol.breadcrumb a {
 ol.breadcrumb a:hover {
   color: #007bff;
   text-decoration: none;
+}
+
+.card {
+  margin-bottom: 30px;
+}
+
+.card-header h4.titolo {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+.card-header a {
+  float: right;
+}
+
+.card-header a i {
+  margin-right: 10px;
+}
+
+.card-body table {
+  margin-bottom: 0;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, .03);
+}
+
+/* footer */
+footer.container .card {
+  border: 0;
+}
+
+footer.container .card-body {
+  font-size: .75rem;
+  color: #586069;
+  padding: .75rem 0 0 0;
+}
+
+footer.container .card-body a {
+  color: #586069;
+}
+
+footer.container .card-body a:hover {
+  color: #343a40;
+  text-decoration: none;
+}
+
+footer.container .card-body img {
+  width: 32px;
+  height: 32px;
+  margin-left: .5rem;
 }

@@ -103,5 +103,5 @@ class Provincia extends Database {
     } catch(PDOException $ex) {
       return FALSE;
     }
-  }
+  } // setDeleteProvincia
 } // Provincia

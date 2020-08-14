@@ -22,10 +22,6 @@ class RegioneController {
     return $this->model->getRegione($get);
   }
 
-  public function actionDettaglioRegione($get) {
-    return $this->model->getProvincePerRegione($get);
-  }
-
   public function actionAggiungiRegione($post) {
     return $this->model->setAddRegione($post);
   }
@@ -48,8 +44,8 @@ $valid = new Valid();
 
 if(isset($_GET['r'])) {
   $stylesheet = [
-    "/assets/css/regione.css",
-    "/assets/css/common.css"
+    "/assets/css/common.css",
+    "/assets/css/regione.css"
   ];
   $script = [
     "/assets/js/page.class.js",
@@ -58,12 +54,10 @@ if(isset($_GET['r'])) {
   ];
 
   session_start();
-  
   if(!isset($_SESSION["email"])) {
     header("Location: auth.controller.php?r=login");
     exit();
   }
-  
 
   switch($_GET['r']) {
     // Casi passivi
@@ -71,6 +65,7 @@ if(isset($_GET['r'])) {
       $regioni = isset($_POST['search']) ? $controller->actionCercaRegioni($_POST['search']) : $controller->actionRegioni();
       $regioniCount = isset($regioni['message']) ? 0 : count($regioni);
 
+      $title = "Lista delle regioni";
       $breadcrumb = [
         ['label' => "Homepage", 'url' => "../index.php"],
         ['label' => "Lista delle regioni"] // Active non ha url
@@ -82,14 +77,15 @@ if(isset($_GET['r'])) {
 
     case "regione":
       if(isset($_GET['id']) && $valid->idRegione()) {
-        $province = $controller->actionDettaglioRegione($_GET['id']);
+        $regione = $controller->actionRegione($_GET['id']);
         $provinceCount = $controller->actionCountProvince($_GET['id']);
 
         array_push($script,
-          "/assets/js/provincia.js",
-          "/assets/js/ajax.class.js"
+          "/assets/js/ajax.class.js",
+          "/assets/js/provincia.js"
         );
 
+        $title = "Dettaglio della regione: " . $_GET['id'];
         $breadcrumb = [
           ['label' => "Homepage", 'url' => "../index.php"],
           ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
@@ -104,6 +100,7 @@ if(isset($_GET['r'])) {
       break;
 
     case "aggiungiRegione":
+      $title = "Aggiungi regione";
       $breadcrumb = [
         ['label' => "Homepage", 'url' => "../index.php"],
         ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
@@ -118,6 +115,7 @@ if(isset($_GET['r'])) {
       if(isset($_GET['id']) && $valid->idRegione()) {
         $nomeRegione = $controller->actionRegione($_GET['id']);
 
+        $title = "Modifica regione: " . $_GET['id'];
         $breadcrumb = [
           ['label' => "Homepage", 'url' => "../index.php"],
           ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],

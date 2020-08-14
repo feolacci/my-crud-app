@@ -6,18 +6,20 @@ class Auth extends Database {
   public function getLogin($post) {
     $query = "SELECT email, password FROM utenti WHERE email = :email";
 
-    try {			
+    try {
       $this->stmt = $this->dbConn->prepare($query);
       $this->stmt->execute(array(":email" => $post["email"]));
 
       if($this->stmt->rowCount() > 0) {
-				$user = $this->stmt->fetch(PDO::FETCH_ASSOC);
-				if(password_verify($post["password"], $user["password"])) {					
+        $user = $this->stmt->fetch(PDO::FETCH_ASSOC);
+        
+				if(password_verify($post["password"], $user["password"])) {
 					$_SESSION["email"] = $post["email"];
-					return true;
+          return true;
+          
 				} else {
 					return array('error' => 1);
-				}        
+				}
       } else {
         return array('error' => 1);
       }
@@ -33,14 +35,15 @@ class Auth extends Database {
   } // getLogin
 
   public function setLogout() {
-    if(isset($_SESSION["email"])) {        
+    if(isset($_SESSION["email"])) {
       $_SESSION = array();
       session_destroy();
     }
-  } // setLogout  
+  } // setLogout
 
   public function setSignup($post) {
     $query = "SELECT email FROM utenti WHERE email = :email";
+
     try {
       $this->stmt = $this->dbConn->prepare($query);
       $this->stmt->execute(array('email' => $post["email"]));
@@ -77,5 +80,4 @@ class Auth extends Database {
       );
     }
   } // setSignup
-
 } // Auth
