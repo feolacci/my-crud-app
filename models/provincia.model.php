@@ -33,7 +33,7 @@ class Provincia extends Database {
       $this->stmt = $this->dbConn->prepare($query);
       $this->stmt->execute(array(':provincia' => $post));
       
-      if($this->stmt->rowCount() > 0) {
+      if($this->stmt->rowCount() == 1) {
         $provincia = $this->stmt->fetch(PDO::FETCH_ASSOC);
         return $provincia;
       } else {

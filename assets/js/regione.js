@@ -14,6 +14,9 @@ class RegioneController {
 
     if(msg) {
       switch(msg) {
+        case '5':
+          Html.alert('danger', "La regione è già presente.");
+          break;
         case '4':
           var target = document.querySelector('form .form-group');
           var alert = Html.alert('danger', "Il valore inserito non sembra essere valido.", target, true);

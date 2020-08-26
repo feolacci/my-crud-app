@@ -27,7 +27,7 @@ class Regione extends Database {
   } // getRegioni
 
   public function getCercaRegioni($post) {
-    $query = "SELECT * FROM regioni WHERE regione LIKE :regione OR id_regione LIKE :id_regione";
+    $query = "SELECT * FROM regioni WHERE regione LIKE :regione OR id_regione = :id_regione";
     $data = [
       ':regione' => '%' . $post . '%',
       ':id_regione' => $post
@@ -61,7 +61,7 @@ class Regione extends Database {
       $this->stmt = $this->dbConn->prepare($query);
       $this->stmt->execute(array(':regione' => $get));
       
-      if($this->stmt->rowCount() > 0) {
+      if($this->stmt->rowCount() == 1) {
         $regione = $this->stmt->fetch(PDO::FETCH_ASSOC);
         return $regione;
       } else {
@@ -79,7 +79,8 @@ class Regione extends Database {
   } // getRegione
 
   public function setAddRegione($post) {
-    $query = "INSERT INTO regioni (regione) VALUES (:regione)";
+
+    $query = "SELECT regione FROM regioni WHERE regione = :regione";
     $data = [
       'regione' => $post
     ];
@@ -87,10 +88,34 @@ class Regione extends Database {
     try {
       $this->stmt = $this->dbConn->prepare($query);
       $this->stmt->execute($data);
+
+      if($this->stmt->rowCount() == 1) { // regione già presente
+        return array('error' => 1);
+      }
+    } catch(PDOException $ex) {
+      $this->error = $ex->getMessage();
+
+      return array(
+        'message' => "Query error: " . $this->error,
+        'line' => $ex->getLine()
+      );
+    }
+
+    $query = "INSERT INTO regioni (regione) VALUES (:regione)";    
+
+    try {
+      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt->execute($data);
       return TRUE;
 
     } catch(PDOException $ex) {
-      return FALSE;
+      $this->error = $ex->getMessage();
+
+      return array(
+        'error' => 2, // errore generico query
+        'message' => "Query error: " . $this->error,
+        'line' => $ex->getLine()
+      );
     }
   } // setAddRegione
 

@@ -132,13 +132,20 @@ if(isset($_GET['r'])) {
     
     // Casi attivi
     case "addRegione":
-      if($post = $valid->string($_POST['nameRegione'])) {
+      if($post = $valid->string($_POST['nameRegione'])) {        
         $result = $controller->actionAggiungiRegione($post);
-        if($result) {
+
+        if(!isset($result["error"])) {
           header("Location: regione.controller.php?r=regione&id=" . $post . "&msg=1");
         } else {
-          header("Location: regione.controller.php?r=aggiungiRegione&msg=0");
+          if($result["error"] === 1) { // regione già esistente
+            header("Location: regione.controller.php?r=aggiungiRegione&msg=5");
+          }
+          if($result["error"] === 2) { // errore generico query
+            header("Location: regione.controller.php?r=aggiungiRegione&msg=0");
+          }          
         }
+        
       } else {
         header("Location: regione.controller.php?r=aggiungiRegione&msg=4");
       }
