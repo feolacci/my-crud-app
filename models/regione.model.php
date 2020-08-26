@@ -2,27 +2,26 @@
 require_once "database.inc.php";
 
 class Regione extends Database {
+  public function __construct() {
+    if(parent::$dbConn === null) {parent::__construct();}
+  }
+
   public function getRegioni() {
     $query = "SELECT * FROM regioni ORDER BY regione";
 
     try {
-      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute();
 
       if($this->stmt->rowCount() > 0) {
         $regioni = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
         return $regioni;
       } else {
-        return array('message' => "Non è stata trovata nessuna regione.");
+        return ErrorHandler::error("Non è stata trovata alcuna regione.", null);
       }
 
     } catch(PDOException $ex) {
-      $this->error = $ex->getMessage();
-
-      return array(
-        'message' => "Query error: " . $this->error,
-        'line' => $ex->getLine()
-      );
+      return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
     }
   } // getRegioni
 
@@ -34,88 +33,66 @@ class Regione extends Database {
     ];
 
     try {
-      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute($data);
 
       if($this->stmt->rowCount() > 0) {
         $regioni = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
         return $regioni;
       } else {
-        return array('message' => "La ricerca non ha prodotto risultati.");
+        return ErrorHandler::error("Non è stata trovata alcuna regione.", null);
       }
 
     } catch(PDOException $ex) {
-      $this->error = $ex->getMessage();
-
-      return array(
-        'message' => "Query error: " . $this->error,
-        'line' => $ex->getLine()
-      );
+      return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
     }
   } // getCercaRegioni
 
   public function getRegione($get) {
-    $query = "SELECT * FROM regioni WHERE regione = :regione";
+    $query = "SELECT * FROM regionis WHERE regione = :regione";
 
     try {
-      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute(array(':regione' => $get));
       
       if($this->stmt->rowCount() == 1) {
         $regione = $this->stmt->fetch(PDO::FETCH_ASSOC);
         return $regione;
       } else {
-        return array('message' => "La regione indicata non è stata trovata.");
+        return ErrorHandler::error("La regione indicata non è stata trovata.", null);
       }
 
     } catch(PDOException $ex) {
-      $this->error = $ex->getMessage();
-
-      return array(
-        'message' => "Query error: " . $this->error,
-        'line' => $ex->getLine()
-      );
+      return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
     }
   } // getRegione
 
   public function setAddRegione($post) {
-
     $query = "SELECT regione FROM regioni WHERE regione = :regione";
     $data = [
       'regione' => $post
     ];
 
     try {
-      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute($data);
 
       if($this->stmt->rowCount() == 1) { // regione già presente
-        return array('error' => 1);
+        return ErrorHandler::error(null, null, 1);
       }
     } catch(PDOException $ex) {
-      $this->error = $ex->getMessage();
-
-      return array(
-        'message' => "Query error: " . $this->error,
-        'line' => $ex->getLine()
-      );
+      return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
     }
 
     $query = "INSERT INTO regioni (regione) VALUES (:regione)";    
 
     try {
-      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute($data);
       return TRUE;
 
     } catch(PDOException $ex) {
-      $this->error = $ex->getMessage();
-
-      return array(
-        'error' => 2, // errore generico query
-        'message' => "Query error: " . $this->error,
-        'line' => $ex->getLine()
-      );
+      return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
     }
   } // setAddRegione
 
@@ -127,7 +104,7 @@ class Regione extends Database {
     ];
     
     try {
-      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute($data);
       return TRUE;
 
@@ -140,7 +117,7 @@ class Regione extends Database {
     $query = "DELETE FROM regioni WHERE regione = :regione";
 
     try {
-      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute(array(':regione' => $get));
       return TRUE;
 
@@ -153,7 +130,7 @@ class Regione extends Database {
     $query = "SELECT count(provincia) AS conteggio FROM province WHERE regione = :regione";
 
     try {
-      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute(array(':regione' => $get));
 
       if($this->stmt->rowCount() > 0) {
@@ -162,12 +139,7 @@ class Regione extends Database {
       }
 
     } catch(PDOException $ex) {
-      $this->error = $ex->getMessage();
-
-      return array(
-        'message' => "Query error: " . $this->error,
-        'line' => $ex->getLine()
-      );
+      return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
     }
   } // getCountProvincePerRegione
 } // Regione

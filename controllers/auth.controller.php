@@ -84,7 +84,7 @@ if(isset($_GET['r'])) {
         if(!isset($result["error"])) {
           header("Location: regione.controller.php?r=regioni");
         } else {
-          if($result["error"] === 1) { // credenziali errate
+          if($result["code"] === 1) { // credenziali errate
             header("Location: auth.controller.php?r=login&msg=1");
           }
         }
@@ -105,7 +105,7 @@ if(isset($_GET['r'])) {
         if(!isset($result["error"])) { // registrazione ok
           header("Location: auth.controller.php?r=login&msg=2");
         } else {
-          if($result["error"] === 1) { // utente già esistente
+          if($result["code"] === 1) { // utente già esistente
             header("Location: auth.controller.php?r=signup&msg=3");
           }
         }      

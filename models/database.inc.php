@@ -6,7 +6,7 @@ class Database {
 	protected $user = DB_USER;
 	protected $pass = DB_PASS;
 	protected $dbname = DB_NAME;
-	protected $dbConn;
+	protected static $dbConn;
 	protected $stmt;
 	protected $error;
   
@@ -19,15 +19,11 @@ class Database {
 	  );
   
 	  try {
-      $this->dbConn = new PDO($dsn, $this->user, $this->pass, $options);
-      return array('message' => "Connection OK");  
+      self::$dbConn = new PDO($dsn, $this->user, $this->pass, $options);
+      return TRUE;
 	  } catch(PDOException $ex) {
-		  $this->error = $ex->getMessage();
-		
-		  return array(
-		    'message' => "Connection error: " . $this->error,
-        'line' => $ex->getLine()
-      );
+			self::$dbConn = FALSE;
+			return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
 	  }
 	} // __construct
 }

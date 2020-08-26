@@ -3,11 +3,15 @@ require_once "database.inc.php";
 session_start();
 
 class Auth extends Database {
+  public function __construct() {
+    if(parent::$dbConn === null) {parent::__construct();}
+  }
+  
   public function getLogin($post) {
     $query = "SELECT email, password FROM utenti WHERE email = :email";
 
     try {
-      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute(array(":email" => $post["email"]));
 
       if($this->stmt->rowCount() > 0) {
@@ -18,19 +22,14 @@ class Auth extends Database {
           return true;
           
 				} else {
-					return array('error' => 1);
+          return ErrorHandler::error(null, null, 1);
 				}
       } else {
-        return array('error' => 1);
+        return ErrorHandler::error(null, null, 1);
       }
 
     } catch(PDOException $ex) {
-      $this->error = $ex->getMessage();
-
-      return array(
-        'message' => "Query error: " . $this->error,
-        'line' => $ex->getLine()
-      );
+      return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
     }
   } // getLogin
 
@@ -45,19 +44,14 @@ class Auth extends Database {
     $query = "SELECT email FROM utenti WHERE email = :email";
 
     try {
-      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute(array('email' => $post["email"]));
 
       if($this->stmt->rowCount() > 0) {
-        return array('error' => 1);
+        return ErrorHandler::error(null, null, 1);
       }
     } catch(PDOException $ex) {
-      $this->error = $ex->getMessage();
-
-      return array(
-        'message' => "Query error: " . $this->error,
-        'line' => $ex->getLine()
-      );
+      return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
     }
 
     $query = "INSERT INTO utenti (email, password) VALUES (:email, :password)";
@@ -67,17 +61,12 @@ class Auth extends Database {
     ];
 
     try {
-      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute($data);
       return TRUE;
 
     } catch(PDOException $ex) {
-      $this->error = $ex->getMessage();
-
-      return array(
-        'message' => "Query error: " . $this->error,
-        'line' => $ex->getLine()
-      );
+      return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
     }
   } // setSignup
 } // Auth

@@ -63,7 +63,7 @@ if(isset($_GET['r'])) {
     // Casi passivi
     case "regioni":
       $regioni = isset($_POST['search']) ? $controller->actionCercaRegioni($_POST['search']) : $controller->actionRegioni();
-      $regioniCount = isset($regioni['message']) ? 0 : count($regioni);
+      $regioniCount = isset($regioni['error']) ? 0 : count($regioni);
 
       $title = "Lista delle regioni";
       $breadcrumb = [
@@ -138,14 +138,12 @@ if(isset($_GET['r'])) {
         if(!isset($result["error"])) {
           header("Location: regione.controller.php?r=regione&id=" . $post . "&msg=1");
         } else {
-          if($result["error"] === 1) { // regione già esistente
+          if($result["code"] === 1) { // regione già esistente
             header("Location: regione.controller.php?r=aggiungiRegione&msg=5");
-          }
-          if($result["error"] === 2) { // errore generico query
+          } else {          
             header("Location: regione.controller.php?r=aggiungiRegione&msg=0");
-          }          
-        }
-        
+          }
+        }        
       } else {
         header("Location: regione.controller.php?r=aggiungiRegione&msg=4");
       }

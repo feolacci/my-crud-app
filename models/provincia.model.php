@@ -2,27 +2,26 @@
 require_once "database.inc.php";
 
 class Provincia extends Database {
+  public function __construct() {
+    if(parent::$dbConn === null) {parent::__construct();}
+  }
+
   public function getProvince() {
     $query = "SELECT * FROM province";
 
     try {
-      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute();
 
       if($this->stmt->rowCount() > 0) {
         $province = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
         return $province;
       } else {
-        return array('message' => "Non è stata trovata nessuna provincia.");
+        return ErrorHandler::error("Non è stata trovata nessuna provincia.", null);
       }
 
     } catch(PDOException $ex) {
-      $this->error = $ex->getMessage();
-
-      return array(
-        'message' => "Query error: " . $this->error,
-        'line' => $ex->getLine()
-      );
+      return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
     }
   } // getProvince
 
@@ -30,23 +29,18 @@ class Provincia extends Database {
     $query = "SELECT * FROM province WHERE provincia = :provincia";
 
     try {
-      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute(array(':provincia' => $post));
       
       if($this->stmt->rowCount() == 1) {
         $provincia = $this->stmt->fetch(PDO::FETCH_ASSOC);
         return $provincia;
       } else {
-        return array('message' => "La provincia indicata non è stata trovata.");
+        return ErrorHandler::error("La provincia indicata non è stata trovata", null);
       }
 
     } catch(PDOException $ex) {
-      $this->error = $ex->getMessage();
-
-      return array(
-        'message' => "Query error: " . $this->error,
-        'line' => $ex->getLine()
-      );
+      return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
     }
   } // getProvincia
 
@@ -54,23 +48,18 @@ class Provincia extends Database {
     $query = "SELECT * FROM province WHERE regione = :regione ORDER BY id_province DESC";
 
     try {
-      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute(array(':regione' => $get));
 
       if($this->stmt->rowCount() > 0) {
         $province = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
         return $province;
       } else {
-        return array('message' => "Non è stata trovata nessuna provincia.");
+        return ErrorHandler::error("Non è stata trovata nessuna provincia", null);
       }
 
     } catch(PDOException $ex) {
-      $this->error = $ex->getMessage();
-
-      return array(
-        'message' => "Query error: " . $this->error,
-        'line' => $ex->getLine()
-      );
+      return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
     }
   } // getProvincePerRegione
 
@@ -83,7 +72,7 @@ class Provincia extends Database {
     ];
 
     try {
-      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute($data);
       return TRUE;
 
@@ -96,7 +85,7 @@ class Provincia extends Database {
     $query = "DELETE FROM province WHERE id_province = :id_province";
 
     try {
-      $this->stmt = $this->dbConn->prepare($query);
+      $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute(array(':id_province' => $get));
       return TRUE;
 
