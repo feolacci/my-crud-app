@@ -17,7 +17,7 @@ class Provincia extends Database {
         $province = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
         return $province;
       } else {
-        return ErrorHandler::error("Non è stata trovata nessuna provincia.", null);
+        return ErrorHandler::returnError("Non è stata trovata nessuna provincia.");
       }
 
     } catch(PDOException $ex) {
@@ -36,7 +36,7 @@ class Provincia extends Database {
         $provincia = $this->stmt->fetch(PDO::FETCH_ASSOC);
         return $provincia;
       } else {
-        return ErrorHandler::error("La provincia indicata non è stata trovata", null);
+        return ErrorHandler::returnError("La provincia indicata non è stata trovata.");
       }
 
     } catch(PDOException $ex) {
@@ -55,7 +55,7 @@ class Provincia extends Database {
         $province = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
         return $province;
       } else {
-        return ErrorHandler::error("Non è stata trovata nessuna provincia", null);
+        return ErrorHandler::returnError("Non è stata trovata nessuna provincia.");
       }
 
     } catch(PDOException $ex) {

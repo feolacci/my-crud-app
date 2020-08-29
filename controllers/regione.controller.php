@@ -2,6 +2,7 @@
 require_once "../models/regione.model.php";
 require_once "errorHandler.inc.php";
 require_once "valid.inc.php";
+require_once "upload.inc.php";
 
 class RegioneController {
   public $model;
@@ -132,33 +133,69 @@ if(isset($_GET['r'])) {
     
     // Casi attivi
     case "addRegione":
-      if($post = $valid->string($_POST['nameRegione'])) {        
-        $result = $controller->actionAggiungiRegione($post);
+      if(!$_FILES["imgRegione"]["error"]) {
+        $imgPath = Upload::img($_FILES["imgRegione"]);
+        
+        if(is_array($imgPath)) {
+          $imgPathLength = count($imgPath) - 1;
+          header("Location: regione.controller.php?r=aggiungiRegione&msg=" . $imgPath[$imgPathLength]);
+          exit();
+        }
+      }
 
-        if(!isset($result["error"])) {
-          header("Location: regione.controller.php?r=regione&id=" . $post . "&msg=1");
+      $post = [
+        'nameRegione' => $valid->string($_POST['nameRegione']),
+        'descRegione' => $valid->string($_POST['descRegione'])
+      ];
+
+      if(!in_array(false, $post)) {
+        $post['imgRegione'] = (isset($imgPath)) ? $imgPath : "../assets/images/120x120.png";
+
+        $result = $controller->actionAggiungiRegione($post);
+        if($result) {
+          header("Location: regione.controller.php?r=regione&id=" . $post["nameRegione"] . "&msg=1");
+          exit();
         } else {
-          if($result["code"] === 1) { // regione già esistente
-            header("Location: regione.controller.php?r=aggiungiRegione&msg=5");
-          } else {          
-            header("Location: regione.controller.php?r=aggiungiRegione&msg=0");
-          }
-        }        
+          // regione già presente
+          header("Location: regione.controller.php?r=aggiungiRegione&msg=5");
+          exit();
+        }
       } else {
         header("Location: regione.controller.php?r=aggiungiRegione&msg=4");
+        exit();
       }
       break;
 
     case "editRegione":
-      if($post = $valid->string($_POST['nameRegione'])) {
+      if(!$_FILES["imgRegione"]["error"]) {
+        $imgPath = Upload::img($_FILES["imgRegione"]);
+        
+        if(is_array($imgPath)) {
+          $imgPathLength = count($imgPath) - 1;
+          header("Location: regione.controller.php?r=modificaRegione&id=" . $_GET['id'] . "&msg=" . $imgPath[$imgPathLength]);
+          exit();
+        }
+      }
+
+      $post = [
+        'nameRegione' => $valid->string($_POST['nameRegione']),
+        'descRegione' => $valid->string($_POST['descRegione'])
+      ];
+      
+      if(!in_array(false, $post)) {
+        $post['imgRegione'] = (isset($imgPath)) ? $imgPath : $_POST['imgRegione'];
+        
         $result = $controller->actionModificaRegione($post);
         if($result) {
-          header("Location: regione.controller.php?r=regione&id=" . $post . "&msg=2");
+          header("Location: regione.controller.php?r=regione&id=" . $post['nameRegione'] . "&msg=2");
+          exit();
         } else {
           header("Location: regione.controller.php?r=modificaRegione&id=" . $_GET['id'] . "&msg=0");
+          exit();
         }
       } else {
         header("Location: regione.controller.php?r=modificaRegione&id=" . $_GET['id'] . "&msg=4");
+        exit();
       }
       break;
 
@@ -167,8 +204,10 @@ if(isset($_GET['r'])) {
         $result = $controller->actionEliminaRegione($_GET['id']);
         if($result) {
           header("Location: regione.controller.php?r=regioni&msg=3");
+          exit();
         } else {
           header("Location: regione.controller.php?r=regioni&msg=0");
+          exit();
         }
       } else {
         ErrorHandler::view("Errore generico senza alcun dettaglio.", "500");

@@ -22,25 +22,24 @@ class ErrorHandler {
   static function error($msg, $line, $code = null) {
     ErrorHandler::email($msg, $line, $code);
     die(ErrorHandler::view($msg, $code));
-    
-    /*
+  } // error
+
+  static function returnError($msg, $code = null) {
     return array(
       'error' => 1,
       'message' => $msg,
-      'line' => $line,
       'code' => $code
     );
-    */
-  } // error
+  } // returnError
 
   static private function email($msg, $line, $code) {
     $content = "Email di errore inviata, errore(".$msg.$line.$code.")";
     $fp = fopen($_SERVER['DOCUMENT_ROOT']."/error.txt","wb");
     fwrite($fp, $content);
     fclose($fp);
-    
+
     /*
-    $to = "xayoko3085@banetc.com";
+    $to = "jimofo6565@hapremx.com";
     $subject = $msg . "(" . $code . ")";
     $message = "Si è verificato un errore alla linea: " . $line;
     
@@ -50,7 +49,7 @@ class ErrorHandler {
     $headers[] = 'From: TicketPro <info@ticketpro.it>';
     //$headers[] = 'To: Destinatario <destina@ta.rio>';
     
-    echo mail($to, $subject, $message, implode("\r\n", $headers)) ? "Email inviata correttamente" : "Email NON inviata";
+    mail($to, $subject, $message, implode("\r\n", $headers));
     */
-  }
+  } // email
 } // ErrorHandler

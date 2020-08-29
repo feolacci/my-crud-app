@@ -11,15 +11,31 @@ class RegioneController {
 
   alertHandler() {
     var msg = Page.getParameterByName('msg');
+    var targetImgRegione = document.querySelector('form .form-group:last-of-type');
+    var targetDescRegione = document.querySelector('form .form-group:nth-child(2)');
 
     if(msg) {
       switch(msg) {
+        case '10':
+          Html.alert('danger', "Non è stato possibile caricare il file.", targetImgRegione, true);
+          break;
+        case '9':
+          Html.alert('danger', "Estensioni consentite: JPG, JPEG, PNG, GIF.", targetImgRegione, true);
+          break;
+        case '8':
+          Html.alert('danger', "L'immagine è troppo grande.", targetImgRegione, true);
+          break;
+        case '7':
+          Html.alert('danger', "L'immagine già esiste.", targetImgRegione, true);
+          break;
+        case '6':
+          Html.alert('danger', "Il file non è un'immagine.", targetImgRegione, true);
+          break;
         case '5':
           Html.alert('danger', "La regione è già presente.");
           break;
         case '4':
-          var target = document.querySelector('form .form-group');
-          var alert = Html.alert('danger', "Il valore inserito non sembra essere valido.", target, true);
+          var alert = Html.alert('danger', "Il valore inserito non sembra essere valido.", targetDescRegione, true);
           
           var input = document.querySelector('form .form-control');
           input.addEventListener('input', function handler() {

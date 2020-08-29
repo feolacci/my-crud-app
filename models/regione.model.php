@@ -17,7 +17,7 @@ class Regione extends Database {
         $regioni = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
         return $regioni;
       } else {
-        return ErrorHandler::error("Non è stata trovata alcuna regione.", null);
+        return ErrorHandler::returnError("Non è stata trovata alcuna regione.");
       }
 
     } catch(PDOException $ex) {
@@ -40,7 +40,7 @@ class Regione extends Database {
         $regioni = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
         return $regioni;
       } else {
-        return ErrorHandler::error("Non è stata trovata alcuna regione.", null);
+        return ErrorHandler::returnError("Non è stata trovata alcuna regione.");
       }
 
     } catch(PDOException $ex) {
@@ -49,7 +49,7 @@ class Regione extends Database {
   } // getCercaRegioni
 
   public function getRegione($get) {
-    $query = "SELECT * FROM regionis WHERE regione = :regione";
+    $query = "SELECT * FROM regioni WHERE regione = :regione";
 
     try {
       $this->stmt = parent::$dbConn->prepare($query);
@@ -59,7 +59,7 @@ class Regione extends Database {
         $regione = $this->stmt->fetch(PDO::FETCH_ASSOC);
         return $regione;
       } else {
-        return ErrorHandler::error("La regione indicata non è stata trovata.", null);
+        return ErrorHandler::returnError("La regione indicata non è stata trovata.");
       }
 
     } catch(PDOException $ex) {
@@ -70,7 +70,7 @@ class Regione extends Database {
   public function setAddRegione($post) {
     $query = "SELECT regione FROM regioni WHERE regione = :regione";
     $data = [
-      'regione' => $post
+      'regione' => $post["nameRegione"],
     ];
 
     try {
@@ -78,13 +78,16 @@ class Regione extends Database {
       $this->stmt->execute($data);
 
       if($this->stmt->rowCount() == 1) { // regione già presente
-        return ErrorHandler::error(null, null, 1);
+        return FALSE;
       }
     } catch(PDOException $ex) {
       return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
     }
 
-    $query = "INSERT INTO regioni (regione) VALUES (:regione)";    
+    $data['descrizione'] = $post["descRegione"];
+    $data['img'] = $post["imgRegione"];
+
+    $query = "INSERT INTO regioni (regione, descrizione, img) VALUES (:regione, :descrizione, :img)";
 
     try {
       $this->stmt = parent::$dbConn->prepare($query);
@@ -97,10 +100,12 @@ class Regione extends Database {
   } // setAddRegione
 
   public function setEditRegione($post) {
-    $query = "UPDATE regioni SET regione = :nameRegione WHERE regione = :regione";
+    $query = "UPDATE regioni SET regione = :nameRegione, descrizione = :descrizione, img = :img WHERE regione = :regione";
     $data = [
       'regione' => $_GET['id'], // Vecchio nome
-      'nameRegione' => $post // Nuovo nome
+      'nameRegione' => $post['nameRegione'], // Nuovo nome
+      'descrizione' => $post['descRegione'],
+      'img' => $post['imgRegione']
     ];
     
     try {

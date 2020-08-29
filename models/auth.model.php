@@ -22,10 +22,10 @@ class Auth extends Database {
           return true;
           
 				} else {
-          return ErrorHandler::error(null, null, 1);
+          return ErrorHandler::returnError(null, 1);
 				}
       } else {
-        return ErrorHandler::error(null, null, 1);
+        ErrorHandler::returnError(null, 1);
       }
 
     } catch(PDOException $ex) {
@@ -48,7 +48,7 @@ class Auth extends Database {
       $this->stmt->execute(array('email' => $post["email"]));
 
       if($this->stmt->rowCount() > 0) {
-        return ErrorHandler::error(null, null, 1);
+        return ErrorHandler::returnError(null, 1);
       }
     } catch(PDOException $ex) {
       return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());

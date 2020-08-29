@@ -82,6 +82,7 @@
 }
 
 /* aggiungiRegione */
-#aggiungiRegione form .form-control {
+#aggiungiRegione form .form-control,
+#aggiungiRegione form .form-control-file {
   margin-bottom: .5rem;
 }
