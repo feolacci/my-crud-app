@@ -1,5 +1,6 @@
 <?php
 require_once "database.inc.php";
+require_once "account.inc.php";
 session_start();
 
 class Auth extends Database {
@@ -8,24 +9,27 @@ class Auth extends Database {
   }
   
   public function getLogin($post) {
-    $query = "SELECT email, password FROM utenti WHERE email = :email";
+    $query = "SELECT email, password, active FROM utenti WHERE email = :email";
 
     try {
       $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute(array(":email" => $post["email"]));
 
-      if($this->stmt->rowCount() > 0) {
+      if($this->stmt->rowCount() === 1) {
         $user = $this->stmt->fetch(PDO::FETCH_ASSOC);
         
 				if(password_verify($post["password"], $user["password"])) {
-					$_SESSION["email"] = $post["email"];
-          return true;
-          
+          if($user["active"] == 1) { // se l'account è attivato
+            $_SESSION["email"] = $post["email"];
+            return true;
+          } else {
+            return ErrorHandler::returnError(null, 2); // account non attivato
+          }          
 				} else {
           return ErrorHandler::returnError(null, 1);
 				}
       } else {
-        ErrorHandler::returnError(null, 1);
+        return ErrorHandler::returnError(null, 1);
       }
 
     } catch(PDOException $ex) {
@@ -47,7 +51,7 @@ class Auth extends Database {
       $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute(array('email' => $post["email"]));
 
-      if($this->stmt->rowCount() > 0) {
+      if($this->stmt->rowCount() == 1) {
         return ErrorHandler::returnError(null, 1);
       }
     } catch(PDOException $ex) {
@@ -63,10 +67,39 @@ class Auth extends Database {
     try {
       $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute($data);
+      Account::sendValidation($post["email"]);
       return TRUE;
 
     } catch(PDOException $ex) {
       return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
     }
   } // setSignup
+
+  public function setActivation($email) {
+    $query = "SELECT email FROM utenti WHERE email = :email";
+    $data = ['email' => $email];
+
+    try {
+      $this->stmt = parent::$dbConn->prepare($query);
+      $this->stmt->execute($data);
+
+      if($this->stmt->rowCount() == 0) {
+        return ErrorHandler::error("Si è verificato un errore nell'attivazione dell'account", null);
+      }
+    } catch(PDOException $ex) {
+      return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
+    }
+
+    $query = "UPDATE utenti SET active='1' WHERE email = :email";
+
+    try {
+      $this->stmt = parent::$dbConn->prepare($query);
+      $this->stmt->execute($data);
+      return TRUE;
+      
+    } catch(PDOException $ex) {
+      return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
+    }
+
+  }
 } // Auth

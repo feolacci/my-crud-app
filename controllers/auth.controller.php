@@ -21,6 +21,10 @@ class AuthController {
   public function actionSignup($post) {
     return $this->model->setSignup($post);
   }
+
+  public function actionActivation($get) {
+    return $this->model->setActivation($get);
+  }
 } // AuthController
 
 $controller = new AuthController();
@@ -89,6 +93,10 @@ if(isset($_GET['r'])) {
             header("Location: auth.controller.php?r=login&msg=1");
             exit();
           }
+          if($result["code"] === 2) { // account non attivato
+            header("Location: auth.controller.php?r=login&msg=4");
+            exit();
+          }
         }
       } else { // dati non validati
         header("Location: auth.controller.php?r=login&msg=0");
@@ -124,6 +132,15 @@ if(isset($_GET['r'])) {
       $controller->actionLogout();
       header("Location: auth.controller.php?r=login");
       exit();
+      break;
+
+    case "activation":
+      $result = $controller->actionActivation($_GET["email"]);
+
+      if($result) {
+        header("Location: auth.controller.php?r=login&msg=5");
+        exit();
+      }
       break;
 			
     default:

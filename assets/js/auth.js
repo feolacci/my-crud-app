@@ -32,6 +32,12 @@ class AuthController {
 				case '3':
 					Html.alert('danger', "Email già in uso. Fai login per accedere o usa una mail diversa per registrarti.");
 					break;
+				case '4':
+					Html.alert('danger', "Account non attivo.");
+					break;
+				case '5':
+				Html.alert('success', "L'account è stato attivato.");
+				break;
         default:
           Html.alert('danger', "Si è verificato un errore.");
           break;
