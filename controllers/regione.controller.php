@@ -3,6 +3,7 @@ require_once "../models/regione.model.php";
 require_once "errorHandler.inc.php";
 require_once "valid.inc.php";
 require_once "upload.inc.php";
+require_once "role.inc.php";
 
 class RegioneController {
   public $model;
@@ -41,6 +42,7 @@ class RegioneController {
 } // RegioneController
 
 $controller = new RegioneController();
+$role = new RoleInc();
 $valid = new Valid();
 
 if(isset($_GET['r'])) {
@@ -63,154 +65,196 @@ if(isset($_GET['r'])) {
   switch($_GET['r']) {
     // Casi passivi
     case "regioni":
-      $regioni = isset($_POST['search']) ? $controller->actionCercaRegioni($_POST['search']) : $controller->actionRegioni();
-      $regioniCount = isset($regioni['error']) ? 0 : count($regioni);
+      if($role->can('read-regione')) {
+      
+        $regioni = isset($_POST['search']) ? $controller->actionCercaRegioni($_POST['search']) : $controller->actionRegioni();
+        $regioniCount = isset($regioni['error']) ? 0 : count($regioni);
 
-      $title = "Lista delle regioni";
-      $breadcrumb = [
-        ['label' => "Homepage", 'url' => "../index.php"],
-        ['label' => "Lista delle regioni"] // Active non ha url
-      ];
-      include "../views/layouts/header.php";
-      include "../views/regione/regioni.php";
-      include "../views/layouts/footer.php";
+        $title = "Lista delle regioni";
+        $breadcrumb = [
+          ['label' => "Homepage", 'url' => "../index.php"],
+          ['label' => "Lista delle regioni"] // Active non ha url
+        ];
+        include "../views/layouts/header.php";
+        include "../views/regione/regioni.php";
+        include "../views/layouts/footer.php";
+
+      } else {
+        ErrorHandler::view("Non hai l'autorizzazione per visualizzare questa pagina.", "403");
+      }
       break;
 
     case "regione":
-      if(isset($_GET['id']) && $valid->idRegione()) {
-        $regione = $controller->actionRegione($_GET['id']);
-        $provinceCount = $controller->actionCountProvince($_GET['id']);
+      if($role->can('read-regione')) {
 
-        array_push($script,
-          "/assets/js/ajax.class.js",
-          "/assets/js/provincia.js"
-        );
+        if(isset($_GET['id']) && $valid->idRegione()) {
+          $regione = $controller->actionRegione($_GET['id']);
+          $provinceCount = $controller->actionCountProvince($_GET['id']);
 
-        $title = "Dettaglio della regione: " . $_GET['id'];
-        $breadcrumb = [
-          ['label' => "Homepage", 'url' => "../index.php"],
-          ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
-          ['label' => $_GET['id']]
-        ];
-        include "../views/layouts/header.php";
-        include "../views/regione/provincePerRegione.php";
-        include "../views/layouts/footer.php";
+          array_push($script,
+            "/assets/js/ajax.class.js",
+            "/assets/js/provincia.js"
+          );
+
+          $title = "Dettaglio della regione: " . $_GET['id'];
+          $breadcrumb = [
+            ['label' => "Homepage", 'url' => "../index.php"],
+            ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
+            ['label' => $_GET['id']]
+          ];
+          include "../views/layouts/header.php";
+          include "../views/regione/provincePerRegione.php";
+          include "../views/layouts/footer.php";
+        } else {
+          ErrorHandler::view("Oops! È imbarazzante. Cerchi qualcosa che non esiste...", "404");
+        }
+
       } else {
-        ErrorHandler::view("Oops! È imbarazzante. Cerchi qualcosa che non esiste...", "404");
+        ErrorHandler::view("Non hai l'autorizzazione per visualizzare questa pagina.", "403");
       }
       break;
 
     case "aggiungiRegione":
-      $title = "Aggiungi regione";
-      $breadcrumb = [
-        ['label' => "Homepage", 'url' => "../index.php"],
-        ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
-        ['label' => "Aggiungi regione"]
-      ];
-      include "../views/layouts/header.php";
-      include "../views/regione/aggiungiRegione.php";
-      include "../views/layouts/footer.php";
-      break;
+      if($role->can('create-regione')) {
 
-    case "modificaRegione":
-      if(isset($_GET['id']) && $valid->idRegione()) {
-        $nomeRegione = $controller->actionRegione($_GET['id']);
-
-        $title = "Modifica regione: " . $_GET['id'];
+        $title = "Aggiungi regione";
         $breadcrumb = [
           ['label' => "Homepage", 'url' => "../index.php"],
           ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
-          ['label' => $_GET['id'], 'url' => "regione.controller.php?r=regione&id=" . $_GET["id"]],
-          ['label' => "Modifica regione"]
+          ['label' => "Aggiungi regione"]
         ];
         include "../views/layouts/header.php";
-        include "../views/regione/modificaRegione.php";
+        include "../views/regione/aggiungiRegione.php";
         include "../views/layouts/footer.php";
+
       } else {
-        ErrorHandler::view("Oops! È imbarazzante. Cerchi qualcosa che non esiste...", "404");
+        ErrorHandler::view("Non hai l'autorizzazione per visualizzare questa pagina.", "403");
+      }
+      break;
+
+    case "modificaRegione":
+      if($role->can('update-regione')) {
+      
+        if(isset($_GET['id']) && $valid->idRegione()) {
+          $nomeRegione = $controller->actionRegione($_GET['id']);
+
+          $title = "Modifica regione: " . $_GET['id'];
+          $breadcrumb = [
+            ['label' => "Homepage", 'url' => "../index.php"],
+            ['label' => "Lista delle regioni", 'url' => "regione.controller.php?r=regioni"],
+            ['label' => $_GET['id'], 'url' => "regione.controller.php?r=regione&id=" . $_GET["id"]],
+            ['label' => "Modifica regione"]
+          ];
+          include "../views/layouts/header.php";
+          include "../views/regione/modificaRegione.php";
+          include "../views/layouts/footer.php";
+        } else {
+          ErrorHandler::view("Oops! È imbarazzante. Cerchi qualcosa che non esiste...", "404");
+        }
+
+      } else {
+        ErrorHandler::view("Non hai l'autorizzazione per visualizzare questa pagina.", "403");
       }
       break;
     
     // Casi attivi
     case "addRegione":
-      if(!$_FILES["imgRegione"]["error"]) {
-        $imgPath = Upload::img($_FILES["imgRegione"]);
-        
-        if(is_array($imgPath)) {
-          $imgPathLength = count($imgPath) - 1;
-          header("Location: regione.controller.php?r=aggiungiRegione&msg=" . $imgPath[$imgPathLength]);
-          exit();
+      if($role->can('create-regione')) {
+      
+        if(!$_FILES["imgRegione"]["error"]) {
+          $imgPath = Upload::img($_FILES["imgRegione"]);
+          
+          if(is_array($imgPath)) {
+            $imgPathLength = count($imgPath) - 1;
+            header("Location: regione.controller.php?r=aggiungiRegione&msg=" . $imgPath[$imgPathLength]);
+            exit();
+          }
         }
-      }
 
-      $post = [
-        'nameRegione' => $valid->string($_POST['nameRegione']),
-        'descRegione' => $valid->string($_POST['descRegione'])
-      ];
+        $post = [
+          'nameRegione' => $valid->string($_POST['nameRegione']),
+          'descRegione' => $valid->string($_POST['descRegione'])
+        ];
 
-      if(!in_array(false, $post)) {
-        $post['imgRegione'] = (isset($imgPath)) ? $imgPath : "../assets/images/120x120.png";
+        if(!in_array(false, $post)) {
+          $post['imgRegione'] = (isset($imgPath)) ? $imgPath : "../assets/images/120x120.png";
 
-        $result = $controller->actionAggiungiRegione($post);
-        if($result) {
-          header("Location: regione.controller.php?r=regione&id=" . $post["nameRegione"] . "&msg=1");
-          exit();
+          $result = $controller->actionAggiungiRegione($post);
+          if($result) {
+            header("Location: regione.controller.php?r=regione&id=" . $post["nameRegione"] . "&msg=1");
+            exit();
+          } else {
+            // regione già presente
+            header("Location: regione.controller.php?r=aggiungiRegione&msg=5");
+            exit();
+          }
         } else {
-          // regione già presente
-          header("Location: regione.controller.php?r=aggiungiRegione&msg=5");
+          header("Location: regione.controller.php?r=aggiungiRegione&msg=4");
           exit();
         }
+
       } else {
-        header("Location: regione.controller.php?r=aggiungiRegione&msg=4");
-        exit();
+        ErrorHandler::view("Non hai l'autorizzazione per visualizzare questa pagina.", "403");
       }
       break;
 
     case "editRegione":
-      if(!$_FILES["imgRegione"]["error"]) {
-        $imgPath = Upload::img($_FILES["imgRegione"]);
-        
-        if(is_array($imgPath)) {
-          $imgPathLength = count($imgPath) - 1;
-          header("Location: regione.controller.php?r=modificaRegione&id=" . $_GET['id'] . "&msg=" . $imgPath[$imgPathLength]);
-          exit();
-        }
-      }
-
-      $post = [
-        'nameRegione' => $valid->string($_POST['nameRegione']),
-        'descRegione' => $valid->string($_POST['descRegione'])
-      ];
+      if($role->can('update-regione')) {
       
-      if(!in_array(false, $post)) {
-        $post['imgRegione'] = (isset($imgPath)) ? $imgPath : $_POST['imgRegione'];
+        if(!$_FILES["imgRegione"]["error"]) {
+          $imgPath = Upload::img($_FILES["imgRegione"]);
+          
+          if(is_array($imgPath)) {
+            $imgPathLength = count($imgPath) - 1;
+            header("Location: regione.controller.php?r=modificaRegione&id=" . $_GET['id'] . "&msg=" . $imgPath[$imgPathLength]);
+            exit();
+          }
+        }
+
+        $post = [
+          'nameRegione' => $valid->string($_POST['nameRegione']),
+          'descRegione' => $valid->string($_POST['descRegione'])
+        ];
         
-        $result = $controller->actionModificaRegione($post);
-        if($result) {
-          header("Location: regione.controller.php?r=regione&id=" . $post['nameRegione'] . "&msg=2");
-          exit();
+        if(!in_array(false, $post)) {
+          $post['imgRegione'] = (isset($imgPath)) ? $imgPath : $_POST['imgRegione'];
+          
+          $result = $controller->actionModificaRegione($post);
+          if($result) {
+            header("Location: regione.controller.php?r=regione&id=" . $post['nameRegione'] . "&msg=2");
+            exit();
+          } else {
+            header("Location: regione.controller.php?r=modificaRegione&id=" . $_GET['id'] . "&msg=0");
+            exit();
+          }
         } else {
-          header("Location: regione.controller.php?r=modificaRegione&id=" . $_GET['id'] . "&msg=0");
+          header("Location: regione.controller.php?r=modificaRegione&id=" . $_GET['id'] . "&msg=4");
           exit();
         }
+
       } else {
-        header("Location: regione.controller.php?r=modificaRegione&id=" . $_GET['id'] . "&msg=4");
-        exit();
+        ErrorHandler::view("Non hai l'autorizzazione per visualizzare questa pagina.", "403");
       }
       break;
 
     case "deleteRegione":
-      if(isset($_GET['id']) && $valid->idRegione()) {
-        $result = $controller->actionEliminaRegione($_GET['id']);
-        if($result) {
-          header("Location: regione.controller.php?r=regioni&msg=3");
-          exit();
+      if($role->can('delete-regione')) {
+      
+        if(isset($_GET['id']) && $valid->idRegione()) {
+          $result = $controller->actionEliminaRegione($_GET['id']);
+          if($result) {
+            header("Location: regione.controller.php?r=regioni&msg=3");
+            exit();
+          } else {
+            header("Location: regione.controller.php?r=regioni&msg=0");
+            exit();
+          }
         } else {
-          header("Location: regione.controller.php?r=regioni&msg=0");
-          exit();
+          ErrorHandler::view("Errore generico senza alcun dettaglio.", "500");
         }
+
       } else {
-        ErrorHandler::view("Errore generico senza alcun dettaglio.", "500");
+        ErrorHandler::view("Non hai l'autorizzazione per visualizzare questa pagina.", "403");
       }
       break;
 

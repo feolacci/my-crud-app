@@ -27,16 +27,16 @@ class AuthController {
 					Html.alert('danger', "Le credenziali inserite non risultano corrette.", target, true);
 					break;
 				case '2':
-					Html.alert('success', "Registrazione effettuata con successo.");
+					Html.alert('success', "Ci siamo quasi, per completare la registrazione clicca sul link nella email che ti abbiamo appena inviato.");
 					break;
 				case '3':
 					Html.alert('danger', "Email già in uso. Fai login per accedere o usa una mail diversa per registrarti.");
 					break;
 				case '4':
-					Html.alert('danger', "Account non attivo.");
+					Html.alert('danger', "Account non attivo, verifica il tuo indirizzo email per attivare l'account.");
 					break;
 				case '5':
-				Html.alert('success', "L'account è stato attivato.");
+				Html.alert('success', "Il tuo account è stato attivato, ora puoi utilizzare le tue credenziali per effettuare l'accesso.");
 				break;
         default:
           Html.alert('danger', "Si è verificato un errore.");

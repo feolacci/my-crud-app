@@ -46,14 +46,16 @@ class Auth extends Database {
 
   public function setSignup($post) {
     $query = "SELECT email FROM utenti WHERE email = :email";
+    $email = ['email' => $post["email"]];
 
     try {
       $this->stmt = parent::$dbConn->prepare($query);
-      $this->stmt->execute(array('email' => $post["email"]));
+      $this->stmt->execute($email);
 
       if($this->stmt->rowCount() == 1) {
         return ErrorHandler::returnError(null, 1);
       }
+      
     } catch(PDOException $ex) {
       return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
     }
@@ -67,12 +69,37 @@ class Auth extends Database {
     try {
       $this->stmt = parent::$dbConn->prepare($query);
       $this->stmt->execute($data);
-      Account::sendValidation($post["email"]);
-      return TRUE;
 
     } catch(PDOException $ex) {
       return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
     }
+
+    $query = "SELECT id FROM utenti WHERE email = :email";
+
+    try {
+      $this->stmt = parent::$dbConn->prepare($query);
+      $this->stmt->execute($email);
+
+      if($this->stmt->rowCount() === 1) {
+        $utente = $this->stmt->fetch(PDO::FETCH_ASSOC);
+      }
+
+    } catch(PDOException $ex) {
+      return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
+    }
+
+    $query = "INSERT INTO utenti_ruoli (id_utente, id_ruolo) VALUES (:id_utente, 2)";
+
+    try {
+      $this->stmt = parent::$dbConn->prepare($query);
+      $this->stmt->execute(array('id_utente' => $utente['id']));
+
+    } catch(PDOException $ex) {
+      return ErrorHandler::error($ex->getMessage(), $ex->getLine(), $ex->getCode());
+    }
+
+    Account::sendValidation($post["email"]);
+    return TRUE;
   } // setSignup
 
   public function setActivation($email) {
